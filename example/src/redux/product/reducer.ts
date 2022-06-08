@@ -10,7 +10,7 @@ import {
       };
       
       const initialState: ProductState = {
-        data: { quote: 'click that button' } as any,
+        data: {} as any,
         pending: false,
         error: false,
       };

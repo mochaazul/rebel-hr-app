@@ -1,4 +1,10 @@
 {
-  "name": "Riswan",
-  "isHandsome":true
+  "posts": [
+    {
+      "registerId":"",
+      "title": "",
+      "userId": "",
+      "body": ""
+    }
+  ]
 }
