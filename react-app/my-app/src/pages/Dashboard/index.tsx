@@ -1,41 +1,60 @@
 import useDashboard from './useDashboard';
-import DashoardStyle from './style';
-import { Button } from 'components';
+import { ContentModal, DashoardStyle, FloatingButton, Modal } from './style';
+import { Button, Input } from 'components';
 
 const Dashboard = () => {
 	const {
-		allPokemon,
-		pokemon,
+		articles,
 		limit,
 		isLoading,
 		onChangeLimit,
-		onClickPagination
+		onClickPagination,
+		modalVisible,
+		setModalVisible,
+		onChangeInput,
+		onOk,
+		setPostForm,
+		postForm,
+		modalType,
+		onDeleteArticle
 	} = useDashboard();
 
-	// const renderPokemonList = data => {
-	// 	if (!data?.length) return null
+	const renderPostList = () => {
+		if (!articles?.data.length) return null;
 
-	// 	return data?.map((pokemon, index) => (
-	// 		<div key={ index } className='pokemon'>
-	// 			<h1>{ pokemon.name }</h1>
-	// 		</div>
-	// 	))
-	// }
+		return articles?.data.map((article, index) => (
+			<div key={ article.id } className='posts'>
+				<div>
+					<h2>{ article.title }</h2>
+				</div>
+				<div>
+					<span onClick={ () => {
+						setModalVisible(modalType.UPDATE);
+						setPostForm({ title: article.title, content: article.content, id: article.id });
+					} }
+					>Edit | </span>
+					<span onClick={ () => onDeleteArticle(article.id) }>Delete</span>
+				</div>
+			</div>
+		));
+	};
 
 	return (
 		<>
 			<DashoardStyle>
 				<h1>PAGINATION</h1>
 				<div className='list-container'>
-					{/* { renderPokemonList(pokemon) } */ }
+					{ renderPostList() }
 					{ isLoading && <h1>LOADING...</h1> }
 				</div>
 
 				<div style={ { margin: '40px 0' } }>
 					<select onChange={ onChangeLimit } value={ limit }>
-						<option value='10'>10</option>
-						<option value='20'>20</option>
-						<option value='30'>30</option>
+						{
+							Array.from({ length: 10 }, (_, i) => (i + 1) * 10).map((arr) => (
+								<option value={ arr } key={ arr }>{ arr }</option>
+							))
+						}
 					</select>
 					<Button label='Prev Page' onClick={ () => onClickPagination('prev') } />
 					<Button label='Next Page' onClick={ () => onClickPagination('next') } />
@@ -43,9 +62,19 @@ const Dashboard = () => {
 
 				<h1>LOAD MORE</h1>
 				<div className='list-container'>
-					{/* { renderPokemonList(allPokemon) } */ }
 				</div>
 			</DashoardStyle>
+			<FloatingButton>
+				<Button label='+' width='100%' onClick={ () => setModalVisible(modalType.ADD) } />
+			</FloatingButton>
+			<Modal modalVisible={ modalVisible !== modalType.INIT }>
+				<ContentModal>
+					<Input placeholder='title' name='title' onChange={ onChangeInput } value={ postForm.title } />
+					<Input placeholder='content' name='content' onChange={ onChangeInput } value={ postForm.content || '' } />
+					<Button label='Ok' onClick={ () => onOk() } />
+					<Button label='Cancel' onClick={ () => setModalVisible(modalType.INIT) } />
+				</ContentModal>
+			</Modal>
 		</>
 	);
 };

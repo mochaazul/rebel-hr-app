@@ -7,7 +7,7 @@ export type InputType = {
   label?: string;
   placeholder?: string;
   className?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement> | undefined) => void;
+  onChange?: (e?: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined) => void;
 };
 
 const InputStyle = styled.div`

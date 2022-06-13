@@ -1,21 +1,32 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
 
-import { UserActions } from 'stores/actions';
+import { useLoginAdminMutation, setUserData } from 'stores/actions';
+
+import { useAppDispatch, useNavigateApp } from 'hooks';
+import { StatCode } from 'interface';
 
 const useLandingPage = () => {
-	const dispatch = useDispatch();
 
+	const dispatch = useAppDispatch();
+	const navigate = useNavigateApp();
+	const [loginAdmin, loginResponse] = useLoginAdminMutation();
 	const [loginForm, setLoginForm] = useState({
-		email: '',
+		username: '',
 		password: ''
 	});
 
+	useEffect(() => {
+		if (loginResponse.data?.stat_code === StatCode.SUCCESS) {
+			dispatch(setUserData(loginResponse.data.data));
+			navigate('/dashboard');
+		}
+	}, [loginResponse]);
+
 	const onClickLogin = () => {
-		dispatch(UserActions.login(loginForm));
+		loginAdmin(loginForm);
 	};
 
-	const onChangeInput = (e?: React.ChangeEvent<HTMLInputElement>) => {
+	const onChangeInput = (e?: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined) => {
 		if (e) {
 			const { name, value } = e.target;
 			setLoginForm({

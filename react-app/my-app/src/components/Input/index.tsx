@@ -14,8 +14,8 @@ const Input = ({
 	className = '',
 	onChange
 }: InputType) => {
-	const [invalidMessage, setInvalidMessage] = useState('');
-	const [showPassword, setShowPassword] = useState(false);
+	const [, setInvalidMessage] = useState('');
+	const showPassword = false;
 
 	const handleOnBlur = () => {
 		if (name === 'email') {
@@ -27,9 +27,7 @@ const Input = ({
 		}
 	};
 
-	const handleShowPassword = () => setShowPassword(!showPassword);
-
-	const handleOnChange = (e?: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined) => onChange && onChange;
+	const handleOnChange = (e?: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined) => onChange && onChange(e);
 
 	const renderInputType = () => {
 		if (type === 'area') {

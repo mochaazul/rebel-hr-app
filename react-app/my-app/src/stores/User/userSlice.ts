@@ -1,23 +1,27 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { localStorage, history } from 'helpers';
+import { UserData } from 'interface';
+import { localStorage } from 'helpers';
 
-const initialState = {
-    username: '',
-    email: ''
+const initialState: UserData = {
+    accessToken: '',
+    refreshToken: '',
+    roles: [],
+    name: ''
 };
 
 export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        login: (state, action) => {
-            state.username = action.payload.username;
-            state.email = action.payload.email;
-            localStorage.setTokenUser('newtoken1234567890');
-            history.replace('/dashboard');
+        setUserData: (state, action) => {
+            state.accessToken = action.payload.accessToken;
+            state.refreshToken = action.payload.refreshToken;
+            state.roles = action.payload.roles;
+            state.name = action.payload.name;
+            localStorage.setTokenUser(action.payload.accessToken);
         }
     }
 });
 
-export const { login } = userSlice.actions;
+export const { setUserData } = userSlice.actions;

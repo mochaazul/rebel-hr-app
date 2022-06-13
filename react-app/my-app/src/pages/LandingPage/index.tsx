@@ -13,8 +13,8 @@ const LandingPage = () => {
 		<LandingPageStyle>
 			<div className='login'>
 				<Input
-					name='email'
-					placeholder='Email'
+					name='username'
+					placeholder='Username'
 					className='mb-20'
 					onChange={ onChangeInput }
 				/>
