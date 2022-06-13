@@ -6,7 +6,7 @@ const Dashboard = () => {
 	const {
 		articles,
 		limit,
-		isLoading,
+		loadingArticle,
 		onChangeLimit,
 		onClickPagination,
 		modalVisible,
@@ -20,9 +20,9 @@ const Dashboard = () => {
 	} = useDashboard();
 
 	const renderPostList = () => {
-		if (!articles?.data.length) return null;
+		if (!articles?.length) return null;
 
-		return articles?.data.map((article, index) => (
+		return articles?.map((article, index) => (
 			<div key={ article.id } className='posts'>
 				<div>
 					<h2>{ article.title }</h2>
@@ -45,7 +45,7 @@ const Dashboard = () => {
 				<h1>PAGINATION</h1>
 				<div className='list-container'>
 					{ renderPostList() }
-					{ isLoading && <h1>LOADING...</h1> }
+					{ loadingArticle && <h1>LOADING...</h1> }
 				</div>
 
 				<div style={ { margin: '40px 0' } }>

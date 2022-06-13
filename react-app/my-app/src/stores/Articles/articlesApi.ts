@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { ArticleDetail, Articles, Pagination, VariablesArticle } from 'interface';
+import { ArticleDetail, Articles, Pagination, PayloadArticle } from 'interface';
 import { baseUrl } from 'config';
 import { RootState } from 'stores';
 import { generateQueryString } from 'helpers';
@@ -32,7 +32,7 @@ export const articlesApi = createApi({
                     : [{ type: 'Articles', id: 'LIST' }],
 
         }),
-        addArticle: build.mutation<ArticleDetail, Partial<VariablesArticle>>({
+        addArticle: build.mutation<ArticleDetail, Partial<PayloadArticle>>({
             query(body) {
                 return {
                     url: `/articles`,
@@ -59,7 +59,7 @@ export const articlesApi = createApi({
             //     }
             // },
         }),
-        updateArticle: build.mutation<ArticleDetail, Partial<VariablesArticle>>({
+        updateArticle: build.mutation<ArticleDetail, Partial<PayloadArticle>>({
             query(body) {
                 return {
                     url: `/articles/${ body.id }`,
@@ -70,7 +70,7 @@ export const articlesApi = createApi({
 
             invalidatesTags: [{ type: 'Articles', id: 'LIST' }],
         }),
-        deleteArticle: build.mutation<ArticleDetail, Partial<VariablesArticle>>({
+        deleteArticle: build.mutation<ArticleDetail, Partial<PayloadArticle>>({
             query(body) {
                 return {
                     url: `/articles/${ body.id }`,

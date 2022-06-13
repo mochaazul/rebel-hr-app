@@ -1,6 +1,8 @@
+import { useAppDispatch, useTypedSelector } from 'hooks';
+import { ArticleDetail } from 'interface';
 import { useEffect, useState } from 'react';
 
-import { useLazyGetArticlesQuery, useAddArticleMutation, useUpdateArticleMutation, useDeleteArticleMutation } from 'stores/actions';
+import { getArticles, addArticle } from 'stores/actions';
 
 
 enum ModalType {
@@ -22,10 +24,12 @@ const initialState: FormType = {
 };
 
 const useDashboard = () => {
-	const [getArticles, { data: articles, isLoading }] = useLazyGetArticlesQuery();
-	const [addArticle] = useAddArticleMutation();
-	const [updateArticle] = useUpdateArticleMutation();
-	const [deleteArticle] = useDeleteArticleMutation();
+	// const [getArticles, { data: articles, isLoading }] = useLazyGetArticlesQuery();
+	const { articles, loading: loadingArticle } = { articles: [] as ArticleDetail[], loading: false };
+	const dispatch = useAppDispatch();
+	// const [addArticle] = useAddArticleMutation();
+	// const [updateArticle] = useUpdateArticleMutation();
+	// const [deleteArticle] = useDeleteArticleMutation();
 
 	const [offset, setOffset] = useState(0);
 	const [limit, setLimit] = useState(10);
@@ -33,8 +37,8 @@ const useDashboard = () => {
 	const [postForm, setPostForm] = useState<FormType>(initialState);
 
 	useEffect(() => {
-		getArticles({ page: offset, limit });
-	}, []);
+		// dispatch(getArticles({ page: offset, limit }));
+	}, [dispatch, offset, limit]);
 
 	const onChangeLimit = (e?: React.ChangeEvent<HTMLSelectElement>) => e ? setLimit(Number(e.target.value)) : undefined;
 
@@ -54,7 +58,7 @@ const useDashboard = () => {
 	};
 
 	const onOk = () => {
-		const variables = {
+		const payload = {
 			title: postForm.title,
 			content: postForm.content,
 			meta_description: "Interior",
@@ -65,20 +69,20 @@ const useDashboard = () => {
 			is_publish: true
 		};
 		modalVisible === ModalType.ADD ?
-			addArticle(variables) :
-			updateArticle({ ...variables, id: postForm?.id });
+			dispatch(getArticles({ page: offset, limit })) :
+			console.log('wkwkkwwkkwkwkw');
 		setPostForm(initialState);
 		setModalVisible(ModalType.INIT);
 	};
 
 	const onDeleteArticle = (id: number) => {
-		deleteArticle({ id });
+		// deleteArticle({ id });
 	};
 
 	return {
 		articles,
 		limit,
-		isLoading,
+		loadingArticle,
 		onChangeLimit,
 		onClickPagination,
 		modalVisible,

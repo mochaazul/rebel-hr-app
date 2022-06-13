@@ -11,7 +11,7 @@ export interface ArticleDetail {
     is_publish: boolean;
     thubmnail: string;
 }
-export interface VariablesArticle {
+export interface PayloadArticle {
     id?: number;
     title?: string;
     meta_description?: string;

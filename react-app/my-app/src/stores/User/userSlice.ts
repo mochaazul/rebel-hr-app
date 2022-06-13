@@ -1,13 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { UserData } from 'interface';
-import { localStorage } from 'helpers';
+import { localStorage, history } from 'helpers';
+import { login } from './action';
+
 
 const initialState: UserData = {
     accessToken: '',
     refreshToken: '',
     roles: [],
-    name: ''
+    name: '',
+    loading: false,
 };
 
 export const userSlice = createSlice({
@@ -21,7 +24,22 @@ export const userSlice = createSlice({
             state.name = action.payload.name;
             localStorage.setTokenUser(action.payload.accessToken);
         }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(login.fulfilled, (state, action) => {
+            state.loading = false;
+            state = action.payload.data;
+            localStorage.setTokenUser(action.payload.data.accessToken!);
+            history.push('/dashboard');
+        });
+        builder.addCase(login.pending, (state, action) => {
+            state.loading = true;
+        });
+        builder.addCase(login.rejected, (state, action) => {
+            state.loading = false;
+        });
     }
 });
 
 export const { setUserData } = userSlice.actions;
+export { login };
