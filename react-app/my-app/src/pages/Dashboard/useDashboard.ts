@@ -1,6 +1,6 @@
 import { useAppDispatch, useTypedSelector } from 'hooks';
 import { ArticleDetail } from 'interface';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useLayoutEffect } from 'react';
 
 import { getArticles, addArticle } from 'stores/actions';
 
@@ -25,19 +25,19 @@ const initialState: FormType = {
 
 const useDashboard = () => {
 	// const [getArticles, { data: articles, isLoading }] = useLazyGetArticlesQuery();
-	const { articles, loading: loadingArticle } = { articles: [] as ArticleDetail[], loading: false };
+	const { articles, loading: loadingArticle } = useTypedSelector(state => state.articles);
 	const dispatch = useAppDispatch();
 	// const [addArticle] = useAddArticleMutation();
 	// const [updateArticle] = useUpdateArticleMutation();
 	// const [deleteArticle] = useDeleteArticleMutation();
 
 	const [offset, setOffset] = useState(0);
-	const [limit, setLimit] = useState(10);
+	const [limit, setLimit] = useState(20);
 	const [modalVisible, setModalVisible] = useState<ModalType>(ModalType.INIT);
 	const [postForm, setPostForm] = useState<FormType>(initialState);
 
-	useEffect(() => {
-		// dispatch(getArticles({ page: offset, limit }));
+	useLayoutEffect(() => {
+		dispatch(getArticles({ page: offset, limit }));
 	}, [dispatch, offset, limit]);
 
 	const onChangeLimit = (e?: React.ChangeEvent<HTMLSelectElement>) => e ? setLimit(Number(e.target.value)) : undefined;
@@ -69,7 +69,7 @@ const useDashboard = () => {
 			is_publish: true
 		};
 		modalVisible === ModalType.ADD ?
-			dispatch(getArticles({ page: offset, limit })) :
+			dispatch(addArticle(payload)) :
 			console.log('wkwkkwwkkwkwkw');
 		setPostForm(initialState);
 		setModalVisible(ModalType.INIT);

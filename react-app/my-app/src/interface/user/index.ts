@@ -6,5 +6,4 @@ export interface UserData {
     refreshToken?: string;
     name?: string;
     roles?: string[];
-    loading?: boolean;
 }

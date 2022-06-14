@@ -1,7 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, isAsyncThunkAction } from '@reduxjs/toolkit';
 import { ArticleDetail } from 'interface';
 
-import { getArticles, addArticle } from './action';
+import { getArticles, addArticle, updateArticle } from './action';
 
 const initialState = {
     articles: [] as ArticleDetail[],
@@ -25,8 +25,25 @@ export const articleSlice = createSlice({
         builder.addCase(getArticles.rejected, (state, action) => {
             state.loading = false;
         });
+        builder.addCase(addArticle.fulfilled, (state, action) => {
+            state.loading = false;
+        });
+        builder.addCase(addArticle.pending, (state, action) => {
+            state.loading = true;
+        });
+        builder.addCase(addArticle.rejected, (state, action) => {
+            state.loading = false;
+        });
+        builder.addCase(updateArticle.fulfilled, (state, action) => {
+            state.loading = false;
+        });
+        builder.addCase(updateArticle.pending, (state, action) => {
+            state.loading = true;
+        });
+        builder.addCase(updateArticle.rejected, (state, action) => {
+            state.loading = false;
+        });
     }
 });
 
-export { getArticles, addArticle };
 export const { example } = articleSlice.actions;

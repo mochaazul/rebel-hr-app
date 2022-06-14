@@ -5,11 +5,8 @@ import { localStorage, history } from 'helpers';
 import { login } from './action';
 
 
-const initialState: UserData = {
-    accessToken: '',
-    refreshToken: '',
-    roles: [],
-    name: '',
+const initialState = {
+    user: {} as UserData,
     loading: false,
 };
 
@@ -18,17 +15,14 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         setUserData: (state, action) => {
-            state.accessToken = action.payload.accessToken;
-            state.refreshToken = action.payload.refreshToken;
-            state.roles = action.payload.roles;
-            state.name = action.payload.name;
-            localStorage.setTokenUser(action.payload.accessToken);
+            // state.user = action.payload;
+            // localStorage.setTokenUser(action.payload.accessToken);
         }
     },
     extraReducers: (builder) => {
         builder.addCase(login.fulfilled, (state, action) => {
             state.loading = false;
-            state = action.payload.data;
+            state.user = action.payload.data;
             localStorage.setTokenUser(action.payload.data.accessToken!);
             history.push('/dashboard');
         });
