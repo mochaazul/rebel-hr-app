@@ -1,8 +1,7 @@
 import { useAppDispatch, useTypedSelector } from 'hooks';
-import { ArticleDetail } from 'interface';
-import { useEffect, useState, useLayoutEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-import { getArticles, addArticle } from 'stores/actions';
+import { getArticles, addArticle, updateArticle, deleteArticle } from 'stores/actions';
 
 
 enum ModalType {
@@ -24,19 +23,15 @@ const initialState: FormType = {
 };
 
 const useDashboard = () => {
-	// const [getArticles, { data: articles, isLoading }] = useLazyGetArticlesQuery();
 	const { articles, loading: loadingArticle } = useTypedSelector(state => state.articles);
 	const dispatch = useAppDispatch();
-	// const [addArticle] = useAddArticleMutation();
-	// const [updateArticle] = useUpdateArticleMutation();
-	// const [deleteArticle] = useDeleteArticleMutation();
 
 	const [offset, setOffset] = useState(0);
 	const [limit, setLimit] = useState(20);
 	const [modalVisible, setModalVisible] = useState<ModalType>(ModalType.INIT);
 	const [postForm, setPostForm] = useState<FormType>(initialState);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		dispatch(getArticles({ page: offset, limit }));
 	}, [dispatch, offset, limit]);
 
@@ -70,13 +65,13 @@ const useDashboard = () => {
 		};
 		modalVisible === ModalType.ADD ?
 			dispatch(addArticle(payload)) :
-			console.log('wkwkkwwkkwkwkw');
+			dispatch(updateArticle({ ...payload, id: postForm.id }));
 		setPostForm(initialState);
 		setModalVisible(ModalType.INIT);
 	};
 
 	const onDeleteArticle = (id: number) => {
-		// deleteArticle({ id });
+		dispatch(deleteArticle({ id }));
 	};
 
 	return {

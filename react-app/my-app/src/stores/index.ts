@@ -10,7 +10,7 @@ import {
 	REGISTER
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import { configureStore, MiddlewareAPI, Middleware, isRejectedWithValue } from '@reduxjs/toolkit';
+import { configureStore, MiddlewareAPI, Middleware } from '@reduxjs/toolkit';
 
 import { userSlice } from './User';
 import { articleSlice } from './Articles';
@@ -29,10 +29,9 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const middleware: Middleware =
 	(api: MiddlewareAPI) => (next) => (action) => {
-		if (isRejectedWithValue(action)) {
-			// alert('We got a rejected action!');
+		if (!navigator.onLine && action.type.includes('rejected')) {
+			alert('check you internet connection');
 		}
-		// console.log(api, action.type);
 
 		return next(action);
 	};

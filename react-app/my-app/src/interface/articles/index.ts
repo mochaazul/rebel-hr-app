@@ -1,6 +1,3 @@
-import { ResponseType } from "interface/network";
-
-export type Articles = ResponseType<ArticleDetail[]>;
 export interface ArticleDetail {
     id: number;
     title: string;
@@ -20,7 +17,7 @@ export interface PayloadArticle {
     created_by?: string;
     tags?: (string | number)[] | null;
     new_tags?: (string | number)[] | null;
-    is_publish: boolean;
+    is_publish?: boolean;
 }
 
 

@@ -1,8 +1,10 @@
-export interface ResponseType<T> {
-    data: T;
-    pagination: Pagination;
+export interface StatResponse {
     stat_code: number;
     stat_msg: string;
+}
+export interface ResponseType<T> extends StatResponse {
+    data: T;
+    pagination: Pagination;
 }
 
 export interface Pagination {

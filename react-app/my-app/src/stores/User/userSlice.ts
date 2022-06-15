@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { UserData } from 'interface';
+import { StatResponse, UserData } from 'interface';
 import { localStorage, history } from 'helpers';
 import { login } from './action';
 
@@ -8,6 +8,7 @@ import { login } from './action';
 const initialState = {
     user: {} as UserData,
     loading: false,
+    error: {} as StatResponse
 };
 
 export const userSlice = createSlice({
@@ -15,14 +16,14 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         setUserData: (state, action) => {
-            // state.user = action.payload;
-            // localStorage.setTokenUser(action.payload.accessToken);
+            state.user.name = "Boboboi";
         }
     },
     extraReducers: (builder) => {
         builder.addCase(login.fulfilled, (state, action) => {
             state.loading = false;
             state.user = action.payload.data;
+            state.error = initialState.error;
             localStorage.setTokenUser(action.payload.data.accessToken!);
             history.push('/dashboard');
         });
@@ -31,6 +32,7 @@ export const userSlice = createSlice({
         });
         builder.addCase(login.rejected, (state, action) => {
             state.loading = false;
+            state.error = action.payload as StatResponse;
         });
     }
 });

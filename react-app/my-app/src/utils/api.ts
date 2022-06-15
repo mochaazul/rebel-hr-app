@@ -1,4 +1,4 @@
-import { logger, localStorage } from "helpers";
+import { localStorage } from "helpers";
 import { ResponseType } from 'interface';
 
 type Option = {
@@ -26,21 +26,24 @@ export const request = async <T = unknown>(option?: Option): Promise<ResponseTyp
         const data = await response.json();
         if (!response.ok) {
             if (response.status < 400) {
-                return data;
+                // Do somethinh
             } else {
                 if (response.status === 400) {
-                    // Do Something
+                    // Do something
                 } else if (response.status === 401) {
-                    // Do Something
+                    // Do something
                 } else if (response.status === 403) {
                     // Do Something
                 } else if (response.status === 404) {
                     // Do Something
                 } else if (response.status === 500) {
                     // Do Something
+                } else {
+                    throw new Error(data);
                 }
 
             }
+            return Promise.reject(data);
         }
 
 

@@ -2,7 +2,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { UserData } from 'interface';
 import { request } from 'utils';
 import { path } from 'config';
-import { getArticles } from 'stores/Articles';
 
 type LoginType = {
     username: string;
@@ -10,9 +9,11 @@ type LoginType = {
 };
 
 export const login = createAsyncThunk('auth/login', async (payload: LoginType, thunkAPI) => {
-    const response = await request<UserData>({ path: path.auth, method: 'POST', payload });
-    if (response.stat_code === 200) {
-        await thunkAPI.dispatch(getArticles({}));
+    try {
+        const response = await request<UserData>({ path: path.auth, method: 'POST', payload });
+        return response;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+
     }
-    return response;
 });
