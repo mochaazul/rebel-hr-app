@@ -30,7 +30,7 @@ const useDashboard = () => {
 	const [limit, setLimit] = useState(20);
 	const [modalVisible, setModalVisible] = useState<ModalType>(ModalType.INIT);
 	const [postForm, setPostForm] = useState<FormType>(initialState);
-
+	
 	useEffect(() => {
 		dispatch(getArticles({ page: offset, limit }));
 	}, [dispatch, offset, limit]);

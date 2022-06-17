@@ -14,6 +14,7 @@ import {
 } from 'pages';
 import { Navigation } from 'components';
 import { history, localStorage } from 'helpers';
+import UiDemoPage from 'pages/UiDemo';
 
 const PrivateRoute = () => localStorage.getToken() ? <Outlet /> : <Navigate to='/' replace />;
 
@@ -22,6 +23,7 @@ const AppRouter = () => {
 		<HistoryRouter history={ history }>
 			<Navigation />
 			<Routes>
+				<Route path='/uidemo' element= {<UiDemoPage />} />
 				<Route path='/' element={ <LandingPage /> } />
 				<Route element={ <PrivateRoute /> }>
 					<Route path='/dashboard' element={ <Dashboard /> } />
