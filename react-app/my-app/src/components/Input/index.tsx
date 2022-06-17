@@ -4,6 +4,7 @@ import { Languages } from 'constant';
 import { validation } from 'helpers';
 
 import InputStyle, { InputType } from './style';
+import Text from 'components/Text';
 
 const Input = ({
 	type = 'text',

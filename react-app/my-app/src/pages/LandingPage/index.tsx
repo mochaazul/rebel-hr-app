@@ -1,4 +1,4 @@
-import { Input, Button } from 'components';
+import { Input, Button, Text } from 'components';
 
 import useLandingPage from './useLandingPage';
 import LandingPageStyle from './style';
@@ -11,7 +11,8 @@ const LandingPage = () => {
 
 	return (
 		<LandingPageStyle>
-			<div className='login'>
+			<Text.H1>Asdsdasdasd</Text.H1>
+			{/* <div className='login'>
 				<Input
 					name='username'
 					placeholder='Username'
@@ -29,7 +30,7 @@ const LandingPage = () => {
 					label='Login'
 					onClick={ onClickLogin }
 				/>
-			</div>
+			</div> */}
 		</LandingPageStyle>
 	);
 };

@@ -1,38 +1,36 @@
-import TextStyle, { TextType } from './style';
+import { TextHeadingInterface, TextParagraphInterface } from 'interface/ui/TextComponentInterface';
+import React from 'react';
+import { StyledH1, StyledH2, StyledH3, StyledH4, StyledH5, StyledH6 , StyledP} from './style';
 
-const Text = ({
-	fontType = 'p',
-	fontFamily = 'Poppins',
-	children,
-	className,
-	text,
-	fontSize,
-	textAlign,
-	fontStyle,
-	fontWeight,
-	onClick
-}: TextType) => {
-	// eslint-disable-next-line no-undef
-	let content = <p>{ text || <>{ children }</> }</p>;
-	if (fontType === 'h1') content = <h1>{ text || children }</h1>;
-	else if (fontType === 'h2') content = <h2>{ text || children }</h2>;
-	else if (fontType === 'h3') content = <h3>{ text || children }</h3>;
-	else if (fontType === 'h4') content = <h4>{ text || children }</h4>;
-	else if (fontType === 'pre') content = <pre>{ text || children }</pre>;
 
-	return (
-		<TextStyle
-			className={ className }
-			fontFamily={ fontFamily }
-			fontSize={ fontSize }
-			textAlign={ textAlign }
-			fontStyle={ fontStyle }
-			fontWeight={ fontWeight }
-			onClick={ onClick && onClick }
-		>
-			{ content }
-		</TextStyle>
-	);
-};
+export const H1: React.FC<TextHeadingInterface> = ({...props}) => {
+  return <StyledH1 {...props}>{props.children}</StyledH1>
+}
 
-export default Text;
+export const H2: React.FC<TextHeadingInterface> = ({...props}) => {
+  return <StyledH2 {...props}>{props.children}</StyledH2>
+}
+
+export const H3: React.FC<TextHeadingInterface> = ({...props}) => {
+  return <StyledH3 {...props}>{props.children}</StyledH3>
+}
+
+export const H4: React.FC<TextHeadingInterface> = ({...props}) => {
+  return <StyledH4 {...props}>{props.children}</StyledH4>
+}
+
+export const H5: React.FC<TextHeadingInterface> = ({...props}) => {
+  return <StyledH5 {...props}>{props.children}</StyledH5>
+}
+
+export const H6: React.FC<TextHeadingInterface> = ({...props}) => {
+  return <StyledH6 {...props}>{props.children}</StyledH6>
+}
+
+export const P: React.FC<TextParagraphInterface> = ({...props}) => {
+  return <StyledP {...props}>{props.children}</StyledP>
+}
+
+export default {
+  H1,H2,H3,H4,H5,H6,P
+}
