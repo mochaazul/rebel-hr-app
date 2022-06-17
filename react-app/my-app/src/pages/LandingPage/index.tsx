@@ -1,35 +1,36 @@
-import { Input, Button } from 'components';
+import { Input, Button, Form } from 'components';
 
 import useLandingPage from './useLandingPage';
 import LandingPageStyle from './style';
+import useForm from 'components/Form/useForm';
 
 const LandingPage = () => {
 	const {
 		onChangeInput,
-		onClickLogin
+		onClickLogin,
+		loginField
 	} = useLandingPage();
-
+	const { registeredValue, isFormValid, onSubmit } = useForm({
+		initialState: loginField
+	});
 	return (
 		<LandingPageStyle>
-			<div className='login'>
-				<Input
-					name='username'
-					placeholder='Username'
+			<Form className='login' onSubmit={ onSubmit } autoComplete='off'>
+				<Form.TextField
+					placeholder='Email'
 					className='mb-20'
-					onChange={ onChangeInput }
+					{ ...registeredValue('email') }
 				/>
-				<Input
-					name='password'
+				<Form.TextField
 					placeholder='Password'
-					type='password'
 					className='mb-20'
-					onChange={ onChangeInput }
-				/>
+					{ ...registeredValue('password') } />
 				<Button
 					label='Login'
-					onClick={ onClickLogin }
+					type='submit'
+					disabled={ !isFormValid() }
 				/>
-			</div>
+			</Form>
 		</LandingPageStyle>
 	);
 };

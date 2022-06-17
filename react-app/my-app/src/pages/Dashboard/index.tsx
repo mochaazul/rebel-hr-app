@@ -1,6 +1,6 @@
 import useDashboard from './useDashboard';
 import { ContentModal, DashoardStyle, FloatingButton, Modal } from './style';
-import { Button, Input } from 'components';
+import { Button, Input, Form } from 'components';
 
 const Dashboard = () => {
 	const {
@@ -42,6 +42,10 @@ const Dashboard = () => {
 	return (
 		<>
 			<DashoardStyle>
+				<Form>
+					<Form.Label>Hello World</Form.Label>
+					<Form.TextField placeholder='Input here ....' />
+				</Form>
 				<h1>PAGINATION</h1>
 				<div className='list-container'>
 					{ renderPostList() }
