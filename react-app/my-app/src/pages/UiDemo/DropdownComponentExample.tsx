@@ -1,4 +1,3 @@
-import { Menu } from '@headlessui/react';
 import { Button, Text } from 'components';
 import Dropdown from 'components/Dropdown';
 
@@ -16,10 +15,9 @@ const menuItemsDummy = [
   {
     title: 'Menu 4'
   }
+]
 
-];
 const DropdownComponentExample = () => {
-
 
   const renderMenuItem = () => {
     return menuItemsDummy.map(item => {

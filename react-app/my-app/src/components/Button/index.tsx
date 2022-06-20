@@ -1,10 +1,17 @@
 
+import { ButtonHTMLAttributes } from 'react';
 import ButtonStyle, { ButtonType } from './style';
 
-const Button: React.FC<ButtonType> = ({
-	theme, className, type, onClick, width, disabled, children, label, ...props
-}) => {
-
+const Button = ({
+	children,
+	label = 'Submit',
+	theme = 'primary',
+	type = 'button',
+	width = '200px',
+	className,
+	disabled = false,
+	onClick
+}: ButtonType) => {
 	return (
 		<ButtonStyle
 			theme={ theme }
