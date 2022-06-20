@@ -2,9 +2,8 @@ interface TextAreaType extends React.DetailedHTMLProps<React.TextareaHTMLAttribu
     label?: string;
     valid?: boolean;
     errorMessage?: string;
-    touched?: boolean;
 }
-const TextArea = ({ label, errorMessage, touched, children, ...props }: TextAreaType) => {
+const TextArea = ({ label, errorMessage, children, ...props }: TextAreaType) => {
     return (
         <>
             <textarea { ...props } />

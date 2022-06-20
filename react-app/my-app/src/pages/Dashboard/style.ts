@@ -29,7 +29,7 @@ const DashoardStyle = styled.div`
 `;
 
 const FloatingButton = styled.div`
-  position: fixed;
+  position: fixed !important;
   bottom: 20px;
   right: 10px;
   width:50px;
@@ -42,6 +42,7 @@ const FloatingButton = styled.div`
     min-width: auto !important;
     color: white;
     padding: 0 !important;
+    background-color: unset !important;
   }
 `;
 

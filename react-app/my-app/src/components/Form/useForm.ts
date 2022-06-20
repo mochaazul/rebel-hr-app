@@ -1,20 +1,16 @@
 import { useState, useCallback } from "react";
 
-interface IObjectKeys {
-    [key: string]: string | number | Function | any;
-}
-
-interface UseFormtype<T> extends IObjectKeys {
-    initialState: T,
+interface UseFormtype<T> {
+    fields: T,
 };
 
-const useForm = <T>({ initialState }: UseFormtype<T>) => {
-    const [form, setForm] = useState<T | any>(initialState);
+const useForm = <T>({ fields }: UseFormtype<T>) => {
+    const [form, setForm] = useState<T | any>(fields);
 
     const registeredValue = (fieldname: string) => {
         const inputObj = form[fieldname];
-        const { value, label, errorMessage, valid } = inputObj;
-        return { onChange: onInputChange, value, valid, errorMessage, label, name: fieldname };
+        const { value, label, errorMessage, valid, type } = inputObj;
+        return { onChange: onInputChange, value, valid, errorMessage, label, name: fieldname, type };
     };
 
     const isInputFieldValid = useCallback(
@@ -44,7 +40,6 @@ const useForm = <T>({ initialState }: UseFormtype<T>) => {
                 inputObj.valid = false;
             }
 
-            inputObj.touched = true;
             setForm({ ...form, [name]: inputObj });
         },
         [form, isInputFieldValid]
@@ -63,13 +58,31 @@ const useForm = <T>({ initialState }: UseFormtype<T>) => {
         return isValid;
     }, [form]);
 
-    const onSubmit = (event: any) => {
-        event.preventDefault();
+    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         return form;
     };
 
+    const setFieldsValue = useCallback((obj: any) => {
+        let newObj = { ...form };
+        for (const [key, values] of Object.entries(form)) {
+            newObj[key] = {
+                ...values as any,
+                value: obj[key] || ''
+            };
+        }
+        setForm({
+            ...form,
+            ...newObj
+        });
+    }, [form]);
 
-    return { registeredValue, isFormValid, onSubmit };
+    const resetFieldsValue = useCallback(() => {
+        setForm(fields);
+    }, [form]);
+
+
+    return { registeredValue, isFormValid, onSubmit, setFieldsValue, resetFieldsValue };
 };
 
 export default useForm;

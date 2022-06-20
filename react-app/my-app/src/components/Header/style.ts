@@ -1,6 +1,6 @@
-import Styled from 'styled-components'
+import styled from 'styled-components';
 
-const NavigationStyle = Styled.div`
+const Header = styled.div`
   .navbar {
     position: fixed;
     display: flex;
@@ -19,6 +19,6 @@ const NavigationStyle = Styled.div`
   .logo {
     width: 125px;
   }
-`
+`;
 
-export default NavigationStyle
+export default Header;

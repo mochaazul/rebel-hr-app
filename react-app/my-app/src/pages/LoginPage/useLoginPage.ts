@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { login } from 'stores/actions';
-import { useAppDispatch, useNavigateApp } from 'hooks';
+import { useAppDispatch } from 'hooks';
 import {
 	requiredRule,
 	minLengthRule,
 	maxLengthRule,
-	createFieldConfig
-} from 'utils';
+	createFieldConfig,
+	emailRule
+} from 'helpers';
 
 export const loginField = {
 	email: {
@@ -18,7 +19,8 @@ export const loginField = {
 		validationRules: [
 			requiredRule("email"),
 			minLengthRule("email", 10),
-			maxLengthRule("email", 25)
+			maxLengthRule("email", 25),
+			emailRule()
 		]
 	},
 	password: {
@@ -38,19 +40,12 @@ export const loginField = {
 const useLandingPage = () => {
 
 	const dispatch = useAppDispatch();
-	const navigate = useNavigateApp();
 	const [loginForm, setLoginForm] = useState({
 		username: '',
 		password: ''
 	});
-
-	useEffect(() => {
-		// dispatch(setUserData(loginResponse.data.data));
-		// navigate('/dashboard');
-	}, []);
-
-	const onClickLogin = () => {
-		dispatch(login(loginForm));
+	const onClickLogin = ({ username, password }: any) => {
+		dispatch(login({ username, password }));
 	};
 
 	const onChangeInput = (e?: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined) => {

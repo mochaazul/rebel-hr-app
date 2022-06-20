@@ -1,14 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { StatResponse, UserData } from 'interface';
-import { localStorage, history } from 'helpers';
-import { login } from './action';
+import { StatusResponse, UserData } from 'interface';
+import { localStorage } from 'helpers';
+import { login } from './userThunk';
 
 
 const initialState = {
     user: {} as UserData,
     loading: false,
-    error: {} as StatResponse
+    error: {} as StatusResponse
 };
 
 /* function that accepts an initial state, an object of reducer functions, and a 
@@ -19,8 +19,9 @@ export const userSlice = createSlice({
     initialState,
     // functions intended to handle a specific action type, equivalent to a single case statement in a switch
     reducers: {
-        setUserData: (state, action) => {
-            state.user.name = "Boboboi";
+        removeUser: (state) => {
+            state.user = initialState.user;
+            localStorage.clearToken();
         }
     },
     // extraReducers allows createSlice to respond to other action types besides the types it has generated.
@@ -30,17 +31,16 @@ export const userSlice = createSlice({
             state.user = action.payload.data;
             state.error = initialState.error;
             localStorage.setTokenUser(action.payload.data.accessToken!);
-            history.push('/dashboard');
         });
         builder.addCase(login.pending, (state, action) => {
             state.loading = true;
         });
         builder.addCase(login.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload as StatResponse;
+            state.error = action.payload as StatusResponse;
         });
     }
 });
 
-export const { setUserData } = userSlice.actions;
+export const { removeUser } = userSlice.actions;
 export { login };

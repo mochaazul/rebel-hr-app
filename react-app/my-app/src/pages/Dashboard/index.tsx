@@ -1,6 +1,6 @@
 import useDashboard from './useDashboard';
 import { ContentModal, DashoardStyle, FloatingButton, Modal } from './style';
-import { Button, Input, Form } from 'components';
+import { Button, Form } from 'components';
 
 const Dashboard = () => {
 	const {
@@ -11,13 +11,13 @@ const Dashboard = () => {
 		onClickPagination,
 		modalVisible,
 		setModalVisible,
-		onChangeInput,
 		onOk,
-		setPostForm,
-		postForm,
 		modalType,
-		onDeleteArticle
+		onDeleteArticle,
+		addArticleField,
+		setIdArticle
 	} = useDashboard();
+	const { registeredValue, onSubmit, setFieldsValue, resetFieldsValue } = Form.useForm({ fields: addArticleField });
 
 	const renderPostList = () => {
 		if (!articles?.length) return null;
@@ -30,7 +30,8 @@ const Dashboard = () => {
 				<div>
 					<span onClick={ () => {
 						setModalVisible(modalType.UPDATE);
-						setPostForm({ title: article.title, content: article.content, id: article.id });
+						setIdArticle(article.id);
+						setFieldsValue({ title: article.title, content: article.content });
 					} }
 					>Edit | </span>
 					<span onClick={ () => onDeleteArticle(article.id) }>Delete</span>
@@ -42,10 +43,6 @@ const Dashboard = () => {
 	return (
 		<>
 			<DashoardStyle>
-				<Form>
-					<Form.Label>Hello World</Form.Label>
-					<Form.TextField placeholder='Input here ....' />
-				</Form>
 				<h1>PAGINATION</h1>
 				<div className='list-container'>
 					{ renderPostList() }
@@ -67,16 +64,31 @@ const Dashboard = () => {
 				<h1>LOAD MORE</h1>
 				<div className='list-container'>
 				</div>
+				<FloatingButton>
+					<Button label='+' width='100%' onClick={ () => setModalVisible(modalType.ADD) } />
+				</FloatingButton>
 			</DashoardStyle>
-			<FloatingButton>
-				<Button label='+' width='100%' onClick={ () => setModalVisible(modalType.ADD) } />
-			</FloatingButton>
 			<Modal modalVisible={ modalVisible !== modalType.INIT }>
 				<ContentModal>
-					<Input placeholder='title' name='title' onChange={ onChangeInput } value={ postForm.title } />
-					<Input placeholder='content' name='content' onChange={ onChangeInput } value={ postForm.content || '' } />
-					<Button label='Ok' onClick={ () => onOk() } />
-					<Button label='Cancel' onClick={ () => setModalVisible(modalType.INIT) } />
+					<Form onSubmit={ e => {
+						const { title, content } = onSubmit(e);
+						onOk(title.value, content.value);
+						resetFieldsValue();
+					} }>
+						<Form.FormGroup>
+							<Form.Label>Title</Form.Label>
+							<Form.TextField placeholder='Title' { ...registeredValue('title') } />
+						</Form.FormGroup>
+						<Form.FormGroup>
+							<Form.Label>Content</Form.Label>
+							<Form.TextField placeholder='Content' { ...registeredValue('content') } />
+						</Form.FormGroup>
+						<Button label='Ok' type='submit' />
+						<Button label='Cancel' type='reset' onClick={ () => {
+							setModalVisible(modalType.INIT);
+							resetFieldsValue();
+						} } />
+					</Form>
 				</ContentModal>
 			</Modal>
 		</>

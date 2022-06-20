@@ -2,7 +2,7 @@ import { localStorage } from "helpers";
 import { ResponseType } from 'interface';
 
 type Option = {
-    path?: string,
+    endpoint?: string,
     payload?: any,
     method?: 'POST' | 'GET' | 'DELETE' | 'PATCH' | 'PUT';
     baseUrl?: string;
@@ -11,7 +11,7 @@ type Option = {
 
 export const request = async <T = unknown>(option?: Option): Promise<ResponseType<T>> => {
     try {
-        const url = (option?.baseUrl ? option.baseUrl : process.env.REACT_APP_BASE_URL) + option?.path!;
+        const url = (option?.baseUrl ? option.baseUrl : process.env.REACT_APP_BASE_URL) + option?.endpoint!;
         const token = option?.token || localStorage.getToken() ? `Bearer ${ option?.token ? option?.token : localStorage.getToken() }` : '';
         const headers = {
             'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ export const request = async <T = unknown>(option?: Option): Promise<ResponseTyp
         const data = await response.json();
         if (!response.ok) {
             if (response.status < 400) {
-                // Do somethinh
+                // Do something
             } else {
                 if (response.status === 400) {
                     // Do something

@@ -15,28 +15,28 @@ const menuItemsDummy = [
   {
     title: 'Menu 4'
   }
-  
-]
+
+];
 const UiDemoPage = () => {
-	
+
 
   const renderMenuItem = () => {
-    return menuItemsDummy.map(item=>{
-      return <a>{item.title}</a>
-    })
-  }
+    return menuItemsDummy.map(item => {
+      return <a>{ item.title }</a>;
+    });
+  };
 
   const dropdownButton = () => (
-    <Text.P>More</Text.P>
-  )
+    <Text.Paragraph>More</Text.Paragraph>
+  );
 
-	return (
-	  <>
-      <Dropdown 
-      dropdownButton = { dropdownButton() }
-      menuItems ={ renderMenuItem() } />
+  return (
+    <>
+      <Dropdown
+        dropdownButton={ dropdownButton() }
+        menuItems={ renderMenuItem() } />
     </>
-	);
+  );
 };
 
 export default UiDemoPage;

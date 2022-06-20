@@ -2,93 +2,118 @@ import { useAppDispatch, useTypedSelector } from 'hooks';
 import { useEffect, useState } from 'react';
 
 import { getArticles, addArticle, updateArticle, deleteArticle } from 'stores/actions';
-
+import { createFieldConfig, maxLengthRule, minLengthRule, navigation, requiredRule } from 'helpers';
 
 enum ModalType {
-	INIT,
-	ADD,
-	UPDATE,
+  INIT,
+  ADD,
+  UPDATE,
 }
 
-type FormType = {
-	id?: number | undefined;
-	title: string;
-	content: string;
+type QueryParams = {
+  tempOffset?: number,
+  tempLimit?: number;
 };
 
-const initialState: FormType = {
-	id: 0,
-	title: '',
-	content: ''
+export const addArticleField = {
+  title: {
+    ...createFieldConfig({
+      name: "title",
+      type: "text"
+    }),
+    validationRules: [
+      requiredRule("title"),
+      minLengthRule("title", 10),
+      maxLengthRule("title", 25)
+    ]
+  },
+  content: {
+    ...createFieldConfig({
+      name: "content",
+      type: "text"
+    }),
+    validationRules: [
+      requiredRule("content"),
+      minLengthRule("content", 8),
+      maxLengthRule("content", 20)
+    ]
+  }
 };
+
 
 const useDashboard = () => {
-	const { articles, loading: loadingArticle } = useTypedSelector(state => state.articles);
-	const dispatch = useAppDispatch();
+  const { articles, loading: loadingArticle } = useTypedSelector(state => state.articles);
+  const dispatch = useAppDispatch();
+  const { navigate } = navigation();
 
-	const [offset, setOffset] = useState(0);
-	const [limit, setLimit] = useState(20);
-	const [modalVisible, setModalVisible] = useState<ModalType>(ModalType.INIT);
-	const [postForm, setPostForm] = useState<FormType>(initialState);
-	
-	useEffect(() => {
-		dispatch(getArticles({ page: offset, limit }));
-	}, [dispatch, offset, limit]);
+  const [offset, setOffset] = useState(0);
+  const [limit, setLimit] = useState(20);
+  const [modalVisible, setModalVisible] = useState<ModalType>(ModalType.INIT);
+  const [idArticle, setIdArticle] = useState(0);
 
-	const onChangeLimit = (e?: React.ChangeEvent<HTMLSelectElement>) => e ? setLimit(Number(e.target.value)) : undefined;
+  useEffect(() => {
+    dispatch(getArticles({ page: offset, limit }));
+  }, [dispatch, offset, limit]);
 
-	const onClickPagination = (type: string) => {
-		if (type === 'next') setOffset(Number(offset) + Number(limit));
-		else if (offset > 0) setOffset(Number(offset) - Number(limit));
-	};
+  const onChangeLimit = (e?: React.ChangeEvent<HTMLSelectElement>) => {
+    if (e) {
+      const tempLimit = Number(e.target.value);
+      setLimit(tempLimit);
+      handleNavigate({ tempLimit });
+    }
+  };
 
-	const onChangeInput = (e?: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined) => {
-		if (e) {
-			const { name, value } = e.target;
-			setPostForm({
-				...postForm,
-				[name]: value
-			});
-		}
-	};
+  const onClickPagination = (type: string) => {
+    const tempOffset = type === 'next' ? Number(offset) + Number(limit) : Number(offset) - Number(limit);
+    setOffset(tempOffset > 0 ? tempOffset : 0);
+    handleNavigate({ tempOffset });
 
-	const onOk = () => {
-		const payload = {
-			title: postForm.title,
-			content: postForm.content,
-			meta_description: "Interior",
-			created_by: "superadmin",
-			tags: [1],
-			new_tags: [1],
-			thumbnail_img: 'gambar-rumah.jpg',
-			is_publish: true
-		};
-		modalVisible === ModalType.ADD ?
-			dispatch(addArticle(payload)) :
-			dispatch(updateArticle({ ...payload, id: postForm.id }));
-		setPostForm(initialState);
-		setModalVisible(ModalType.INIT);
-	};
+  };
 
-	const onDeleteArticle = (id: number) => {
-		dispatch(deleteArticle({ id }));
-	};
+  const handleNavigate = ({ tempOffset = offset, tempLimit = limit }: QueryParams) => {
+    navigate({
+      // eslint-disable-next-line no-restricted-globals
+      pathname: location.pathname,
+      search: `?page=${ tempOffset > 0 ? tempOffset : 0 }&limit=${ tempLimit }`
 
-	return {
-		articles,
-		limit,
-		loadingArticle,
-		onChangeLimit,
-		onClickPagination,
-		modalVisible,
-		setModalVisible,
-		onChangeInput,
-		onOk,
-		setPostForm,
-		postForm,
-		modalType: ModalType,
-		onDeleteArticle
-	};
+    });
+  };
+
+  const onOk = (title: string, content: string) => {
+    const payload = {
+      title: title,
+      content: content,
+      meta_description: "Interior",
+      created_by: "superadmin",
+      tags: [1],
+      new_tags: [1],
+      thumbnail_img: 'gambar-rumah.jpg',
+      is_publish: true
+    };
+    modalVisible === ModalType.ADD ?
+      dispatch(addArticle(payload)) :
+      dispatch(updateArticle({ ...payload, id: idArticle }));
+    setModalVisible(ModalType.INIT);
+  };
+
+  const onDeleteArticle = (id: number) => {
+    dispatch(deleteArticle({ id }));
+  };
+
+  return {
+    articles,
+    limit,
+    loadingArticle,
+    onChangeLimit,
+    onClickPagination,
+    modalVisible,
+    setModalVisible,
+    onOk,
+    modalType: ModalType,
+    onDeleteArticle,
+    addArticleField,
+    setIdArticle
+  };
 };
 
 export default useDashboard;

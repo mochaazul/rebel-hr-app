@@ -1,8 +1,8 @@
-export interface StatResponse {
+export interface StatusResponse {
     stat_code: number;
     stat_msg: string;
 }
-export interface ResponseType<T> extends StatResponse {
+export interface ResponseType<T> extends StatusResponse {
     data: T;
     pagination: Pagination;
 }
@@ -21,7 +21,7 @@ export interface Pagination {
     tag?: string;
 }
 
-export enum StatCode {
+export enum StatusCode {
     SUCCESS = 200,
     FAILED = 400,
 }

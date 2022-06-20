@@ -1,2 +1,2 @@
 export * from './articlesSlice';
-export * from './action';
+export * from './articlesThunk';

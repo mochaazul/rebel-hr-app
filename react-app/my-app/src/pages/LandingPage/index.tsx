@@ -1,36 +1,27 @@
-import { Input, Button, Form } from 'components';
-
-import useLandingPage from './useLandingPage';
+import { Text } from 'components';
+import { useAppDispatch, useTypedSelector } from 'hooks';
+import { removeUser } from 'stores/actions';
+import { navigation } from 'helpers';
 import LandingPageStyle from './style';
-import useForm from 'components/Form/useForm';
 
 const LandingPage = () => {
-	const {
-		onChangeInput,
-		onClickLogin,
-		loginField
-	} = useLandingPage();
-	const { registeredValue, isFormValid, onSubmit } = useForm({
-		initialState: loginField
-	});
+	const { user } = useTypedSelector(state => state.user);
+	const dispatch = useAppDispatch();
+	const { navigate } = navigation();
+
+	const text = user.accessToken ? 'Logout' : 'Login';
+
+	const handleClick = () => {
+		if (user.accessToken) {
+			dispatch(removeUser());
+		}
+		navigate('/login');
+	};
+
 	return (
 		<LandingPageStyle>
-			<Form className='login' onSubmit={ onSubmit } autoComplete='off'>
-				<Form.TextField
-					placeholder='Email'
-					className='mb-20'
-					{ ...registeredValue('email') }
-				/>
-				<Form.TextField
-					placeholder='Password'
-					className='mb-20'
-					{ ...registeredValue('password') } />
-				<Button
-					label='Login'
-					type='submit'
-					disabled={ !isFormValid() }
-				/>
-			</Form>
+			<Text.H1>Welcome { user.name }</Text.H1>
+			<Text.Paragraph onClick={ handleClick }>{ text }</Text.Paragraph>
 		</LandingPageStyle>
 	);
 };

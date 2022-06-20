@@ -1,5 +1,5 @@
 import { Menu } from '@headlessui/react';
-import { Button, Input, Text } from 'components';
+import { Button, Text } from 'components';
 import Dropdown from 'components/Dropdown';
 
 
@@ -16,28 +16,28 @@ const menuItemsDummy = [
   {
     title: 'Menu 4'
   }
-  
-]
+
+];
 const DropdownComponentExample = () => {
-	
+
 
   const renderMenuItem = () => {
-    return menuItemsDummy.map(item=>{
-      return <a>{item.title}</a>
-    })
-  }
+    return menuItemsDummy.map(item => {
+      return <a>{ item.title }</a>;
+    });
+  };
 
   const dropdownButton = () => (
-    <Text.P>More</Text.P>
-  )
+    <Text.Paragraph>More</Text.Paragraph>
+  );
 
-	return (
-	  <>
-      <Dropdown 
-      dropdownButton = { dropdownButton() }
-      menuItems ={ renderMenuItem() } />
+  return (
+    <>
+      <Dropdown
+        dropdownButton={ dropdownButton() }
+        menuItems={ renderMenuItem() } />
     </>
-	);
+  );
 };
 
 export default DropdownComponentExample;

@@ -1,3 +1,5 @@
+import { regExp } from "constant";
+
 type CreateFieldConfig = {
     name: string, type: string, defaultValue?: string;
 };
@@ -7,7 +9,6 @@ export const createFieldConfig = ({ name, type, defaultValue = "" }: CreateField
         value: defaultValue,
         valid: false,
         errorMessage: "",
-        touched: false,
         name,
         type
     };
@@ -51,5 +52,13 @@ export const passwordMatchRule = () => {
         "passwordMatch",
         `passwords do not match`,
         (inputValue, formObj) => inputValue === formObj.password.value
+    );
+};
+
+export const emailRule = () => {
+    return createValidationRule(
+        "emailPattern",
+        `Should contain email pattern `,
+        (inputValue) => regExp.email.test(inputValue)
     );
 };
