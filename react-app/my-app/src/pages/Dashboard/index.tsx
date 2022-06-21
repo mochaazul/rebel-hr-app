@@ -1,6 +1,7 @@
 import useDashboard from './useDashboard';
 import { ContentModal, DashoardStyle, FloatingButton, Modal } from './style';
 import { Button, Form } from 'components';
+import { logger } from 'helpers';
 
 const Dashboard = () => {
 	const {
@@ -19,6 +20,7 @@ const Dashboard = () => {
 	} = useDashboard();
 	const { registeredValue, onSubmit, setFieldsValue, resetFieldsValue } = Form.useForm({ fields: addArticleField });
 
+	logger("from logger");
 	const renderPostList = () => {
 		if (!articles?.length) return null;
 

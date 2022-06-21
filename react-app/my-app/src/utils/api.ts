@@ -54,5 +54,3 @@ export const request = async <T = unknown>(option?: Option): Promise<ResponseTyp
     }
 };
 
-
-export default request;

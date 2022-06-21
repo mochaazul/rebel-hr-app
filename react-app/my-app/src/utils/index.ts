@@ -1,1 +1,4 @@
-export * from './api';
+import { request } from './api';
+export {
+    request
+};

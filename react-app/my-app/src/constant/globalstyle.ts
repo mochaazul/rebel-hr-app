@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import fonts from './fonts';
 
 import Sizes from './sizes';
 
@@ -11,6 +12,7 @@ export default createGlobalStyle`
 
   body {
     line-height: 1;
+    font-family: ${ fonts.poppinsRegular };
   }
 
   ol, ul {

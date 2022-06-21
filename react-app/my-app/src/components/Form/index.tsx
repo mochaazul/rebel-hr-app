@@ -5,12 +5,11 @@ import Label from '../Label';
 import TextField from '../TextField';
 import TextArea from '../TextArea';
 import FormGroup from '../FormGroup';
-
-interface FormType extends React.DetailedHTMLProps<React.FormHTMLAttributes<HTMLFormElement>, HTMLFormElement> { }
+import { FormStyled, FormType } from './style';
 
 const Form = ({ children, ...props }: FormType) => {
     return (
-        <form { ...props }>{ children }</form>
+        <FormStyled { ...props }>{ children }</FormStyled>
     );
 };
 

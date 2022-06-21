@@ -1,9 +1,5 @@
 import React from "react";
 import styled from 'styled-components';
-
-// Custom Text Component Interface
-// if you need to add new props please change the corresponding interface
-// This is for HEADING ELEMENT
 export interface TextHeadingInterface extends React.HTMLAttributes<HTMLHeadingElement> {
   text?: string;
 }
@@ -12,7 +8,7 @@ export interface TextParagraphInterface extends React.HTMLAttributes<HTMLHeading
   text?: string;
 }
 
-const fontFamily = 'Poppins';
+const fontFamily = 'Poppins-Bold';
 
 export const StyledH1 = styled.h1`
   font-size: 3.5rem;

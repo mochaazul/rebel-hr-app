@@ -5,4 +5,6 @@ import sizes from "./sizes";
 import Globalstyle from "./globalstyle";
 import endpoints from "./endpoints";
 import regExp from "./regExp";
-export { Languages, Images, colors, sizes, Globalstyle, endpoints, regExp };
+import icons from "./icons";
+import fonts from "./fonts";
+export { Languages, Images, colors, sizes, Globalstyle, endpoints, regExp, icons, fonts };
