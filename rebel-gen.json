@@ -1,4 +1,0 @@
-{
-    "schema": "./example/models",
-    "generate": "./example/src/redux"
-}

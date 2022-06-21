@@ -21,20 +21,3 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-.eslintcache
-
-# cypress
-cypress/videos
-cypress/screenshots
-cypress/downloads
-.nyc_output
-
-# Custom
-
-#.env*
-*env.js
-.vscode
-.env
-
-src/graphQL/generated
