@@ -1,4 +1,2 @@
-import { request } from './api';
-export {
-    request
-};
+import { apiCall } from './api';
+export { apiCall };
