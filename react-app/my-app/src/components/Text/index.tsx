@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyledH1, StyledH2, StyledH3, StyledH4, StyledH5, StyledH6, StyledP, TextHeadingInterface, TextParagraphInterface } from './style';
-
+import {
+  StyledH1, StyledH2, StyledH3, StyledH4, StyledH5, StyledH6, StyledP, TextHeadingInterface, TextParagraphInterface
+} from './style';
 
 export const H1: React.FC<TextHeadingInterface> = ({ ...props }) => {
   return <StyledH1 { ...props }>{ props.children }</StyledH1>;
@@ -31,5 +32,11 @@ export const Paragraph: React.FC<TextParagraphInterface> = ({ ...props }) => {
 };
 
 export default {
-  H1, H2, H3, H4, H5, H6, Paragraph
+  H1,
+  H2,
+  H3,
+  H4,
+  H5,
+  H6,
+  Paragraph
 };

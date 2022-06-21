@@ -2,25 +2,28 @@ import React from 'react';
 import {
   Routes,
   Route,
-  unstable_HistoryRouter as HistoryRouter,
+  BrowserRouter,
 } from 'react-router-dom';
-
 import {
   Dashboard,
   Detail,
   LandingPage,
-  LoginPage
 } from 'pages';
 import { Header } from 'components';
-import { history } from 'helpers';
 import { Text } from 'components';
 import { Globalstyle } from 'constant';
 import AuthRoutes from './AuthRoute';
 import PrivateRoute from './PrivateRoute';
+import LoginPage from 'pages/LoginPage';
+import { NavigationSetter } from 'components/NavigationSetter';
 
-const AppRouter = () => {
+const AppRouter:React.FC = () => {
   return (
-    <HistoryRouter history={ history }>
+    <BrowserRouter window={ window }>
+      { /* DO NOT DELETE THIS COMPONENT */ }
+      <NavigationSetter />
+      { /* DO NOT DELETE ABOVE COMPONENT */ }
+
       <Header />
       <Globalstyle />
       <Routes>
@@ -34,7 +37,7 @@ const AppRouter = () => {
         </Route>
         <Route path='*' element={ <Text.H1>404 NOT FOUND</Text.H1> } />
       </Routes>
-    </HistoryRouter>
+    </BrowserRouter >
   );
 };
 

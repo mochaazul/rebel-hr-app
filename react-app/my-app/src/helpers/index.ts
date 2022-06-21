@@ -1,14 +1,14 @@
 import logger from './logger';
 import navigation from './navigation';
-import history from './history';
+import History from './history';
 import * as localStorage from './localStorage';
 import generateQueryString from './generateQueryString';
 export * from './validationRules';
 
 export {
-	logger,
-	navigation,
-	localStorage,
-	history,
-	generateQueryString,
+  logger,
+  navigation,
+  localStorage,
+  History,
+  generateQueryString,
 };

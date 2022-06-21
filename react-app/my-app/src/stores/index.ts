@@ -29,7 +29,7 @@ const reducers = combineReducers({
 const middlewares = [
   errorHandlerMiddleware,
   // Put your custom middleware here
-]
+];
 
 const persistedReducer = persistReducer(persistConfig, reducers);
 
@@ -38,9 +38,17 @@ const store = configureStore({
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        ignoredActions: [
+          FLUSH,
+          REHYDRATE,
+          PAUSE,
+          PERSIST,
+          PURGE,
+          REGISTER
+        ]
       },
     }).concat(middlewares),
+  // eslint-disable-next-line no-undef
   devTools: process.env.NODE_ENV !== 'production'
 });
 

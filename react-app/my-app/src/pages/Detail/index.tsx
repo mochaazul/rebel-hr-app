@@ -1,11 +1,12 @@
-import DetailStyle from './style'
+import React from 'react';
+import DetailStyle from './style';
 
-const Detail = () => {
-	return (
-		<DetailStyle>
-			<h1>Detail</h1>
-		</DetailStyle>
-	)
-}
+const Detail:React.FC = () => {
+  return (
+    <DetailStyle>
+      <h1>Detail</h1>
+    </DetailStyle>
+  );
+};
 
-export default Detail
+export default Detail;

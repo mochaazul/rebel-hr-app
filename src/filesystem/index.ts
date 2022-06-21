@@ -61,7 +61,7 @@ const getAllDirectories = (srcPath: string): string[] => {
             return resultDirectories;
         }
     } catch (error) {
-        console.error(`no such file or directory (${ srcPath })`);
+        console.error(`no such file or directory (${srcPath})`);
     }
 };
 

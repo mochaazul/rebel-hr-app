@@ -1,9 +1,10 @@
+import React from 'react';
 import styled from 'styled-components';
 
 export type ButtonType = {
   theme?: string;
   label?: string;
-  type?: "button" | "submit" | "reset";
+  type?: 'button' | 'submit' | 'reset';
   width?: string;
   disabled?: boolean;
   className?: string;

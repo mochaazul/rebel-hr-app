@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 export interface InputType extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     valid?: string;

@@ -4,8 +4,8 @@ import LandingPage from './LandingPage';
 import LoginPage from './LoginPage';
 
 export {
-	Dashboard,
-	Detail,
-	LandingPage,
-	LoginPage
+  Dashboard,
+  Detail,
+  LandingPage,
+  LoginPage
 };

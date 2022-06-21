@@ -1,5 +1,5 @@
-import Styled from 'styled-components'
+import Styled from 'styled-components';
 
-const DetailStyle = Styled.div``
+const DetailStyle = Styled.div``;
 
-export default DetailStyle
+export default DetailStyle;
