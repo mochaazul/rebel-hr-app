@@ -8,9 +8,6 @@ export interface TextParagraphInterface extends React.HTMLAttributes<HTMLHeading
   text?: string;
 }
 
-const fontFamily = 'Poppins-Bold';
-
-'rounded'
 export const StyledH1 = styled.h1`
   font-size: 3.5rem;
   font-style: unset;

@@ -11,7 +11,7 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { configureStore } from '@reduxjs/toolkit';
-import middleware from './middlware';
+import errorHandlerMiddleware from './middlewares/errorHandlerMiddleware';
 
 import { userSlice } from './User';
 import { articleSlice } from './Articles';
@@ -21,13 +21,17 @@ const persistConfig = {
   storage
 };
 
-const rootReducer = combineReducers({
+const reducers = combineReducers({
   [articleSlice.name]: articleSlice.reducer,
   [userSlice.name]: userSlice.reducer
 });
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const middlewares = [
+  errorHandlerMiddleware,
+  // Put your custom middleware here
+]
 
+const persistedReducer = persistReducer(persistConfig, reducers);
 
 const store = configureStore({
   reducer: persistedReducer,
@@ -36,13 +40,14 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(middleware),
+    }).concat(middlewares),
   devTools: process.env.NODE_ENV !== 'production'
 });
+
 const persistor = persistStore(store);
 
 export type AppDispatch = typeof store.dispatch;
-export type RootState = ReturnType<typeof store.getState>;
 
+export type RootState = ReturnType<typeof store.getState>;
 
 export { store, persistor };

@@ -7,6 +7,10 @@ import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+
+// Remove strict mode if you encounter multiple render cycle
+
 root.render(
   <React.StrictMode >
     <App />

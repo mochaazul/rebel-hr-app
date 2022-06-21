@@ -7,16 +7,25 @@ type Option = {
     method?: 'POST' | 'GET' | 'DELETE' | 'PATCH' | 'PUT';
     baseUrl?: string;
     token?: string;
+    header?: HeadersInit
 };
 
-export const request = async <T = unknown>(option?: Option): Promise<ResponseType<T>> => {
+
+/**
+ * Function to make api call to endpoint provided
+ * @param {Option} [option] - This is the object that contains the request parameters.
+ * @returns Promise<ResponseType<T>>
+ */
+
+export const apiCall = async <T = unknown>(option?: Option): Promise<ResponseType<T>> => {
     try {
         const url = (option?.baseUrl ? option.baseUrl : process.env.REACT_APP_BASE_URL) + option?.endpoint!;
         const token = option?.token || localStorage.getToken() ? `Bearer ${ option?.token ? option?.token : localStorage.getToken() }` : '';
         const headers = {
             'Content-Type': 'application/json',
             Accept: 'application/json',
-            authorization: token
+            authorization: token,
+            ...option?.header
         };
         const response = await fetch(url, {
             method: option?.method,
@@ -25,32 +34,13 @@ export const request = async <T = unknown>(option?: Option): Promise<ResponseTyp
         });
         const data = await response.json();
         if (!response.ok) {
-            if (response.status < 400) {
-                // Do something
-            } else {
-                if (response.status === 400) {
-                    // Do something
-                } else if (response.status === 401) {
-                    // Do something
-                } else if (response.status === 403) {
-                    // Do Something
-                } else if (response.status === 404) {
-                    // Do Something
-                } else if (response.status === 500) {
-                    // Do Something
-                } else {
-                    throw new Error(data);
-                }
-
-            }
+            // Promise rejection will be handled on middleware
+            // there is global error handler for redux thunk on middleware
+            // use error handler logic there instead in here
             return Promise.reject(data);
         }
-
-
         return data;
     } catch (error) {
-
         throw new Error(error as any);
     }
 };
-
