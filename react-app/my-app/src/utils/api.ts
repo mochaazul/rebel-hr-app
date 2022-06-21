@@ -3,20 +3,20 @@ import { localStorage } from 'helpers';
 import { ResponseType } from 'interface';
 
 type Option = {
-    endpoint: string,
-    payload?: any,
-    method: 'POST' | 'GET' | 'DELETE' | 'PATCH' | 'PUT';
-    baseUrl?: string;
-    token?: string;
-    // eslint-disable-next-line no-undef
-    header?: HeadersInit
+  endpoint: string,
+  payload?: any,
+  method: 'POST' | 'GET' | 'DELETE' | 'PATCH' | 'PUT';
+  baseUrl?: string;
+  token?: string;
+  // eslint-disable-next-line no-undef
+  header?: HeadersInit
 };
 
 /**
  * Function to make api call to endpoint provided
  * @param {Option} [option] - This is the object that contains the request parameters.
  * @returns Promise<ResponseType<T>>
- */
+*/
 
 const generateBaseUrl = (endpoint:string, customBaseUrl?:string) => {
   if (customBaseUrl && endpoint) {

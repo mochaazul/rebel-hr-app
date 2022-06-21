@@ -4,8 +4,8 @@ import { UserData } from 'interface';
 import { apiCall } from 'utils';
 
 type LoginType = {
-    username: string;
-    password: string;
+  username: string;
+  password: string;
 };
 
 // function that accepts a Redux action type string and a callback function that should return a promise
