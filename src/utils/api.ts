@@ -29,11 +29,11 @@ const generateBaseUrl = (endpoint:string, customBaseUrl?:string) => {
 };
 
 export const apiCall = async <T = unknown>({
-  token, baseUrl, endpoint, header, method, payload
+  baseUrl, endpoint, header, method, payload
 }: Option): Promise<ResponseType<T>> => {
   try {
     const url = generateBaseUrl(endpoint, baseUrl);
-    const accessToken = token || localStorage.getToken() ? `Bearer ${ token ? token : localStorage.getToken() }` : '';
+    const accessToken = localStorage.getToken() ? `Bearer ${ localStorage.getToken() }` : '';
     const headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',

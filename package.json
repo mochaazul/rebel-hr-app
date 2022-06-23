@@ -29,7 +29,8 @@
     "autoprefixer": "^10.4.7",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "postcss": "^8.4.14"
+    "postcss": "^8.4.14",
+    "react-styleguidist": "^11.2.0"
   },
   "scripts": {
     "start": "react-scripts start",

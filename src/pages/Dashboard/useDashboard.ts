@@ -103,9 +103,9 @@ const useDashboard = () => {
       is_publish: true
     };
     modalVisible === ModalType.ADD ?
-      dispatch(addArticle(payload)) :
+      dispatch(addArticle({ payload })) :
       dispatch(updateArticle({
-        ...payload,
+        payload,
         id: idArticle
       }));
     setModalVisible(ModalType.INIT);
