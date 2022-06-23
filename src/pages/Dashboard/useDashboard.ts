@@ -57,9 +57,7 @@ const useDashboard = () => {
   const [idArticle, setIdArticle] = useState(0);
 
   useEffect(() => {
-    dispatch(getArticles({
-      limit: 1
-    }));
+    dispatch(getArticles({ pagination: { limit } }));
   }, [
     dispatch,
     offset,
@@ -101,9 +99,9 @@ const useDashboard = () => {
       is_publish: true
     };
     modalVisible === ModalType.ADD ?
-      dispatch(addArticle(payload)) :
+      dispatch(addArticle({ payload })) :
       dispatch(updateArticle({
-        ...payload,
+        payload,
         id: idArticle
       }));
     setModalVisible(ModalType.INIT);

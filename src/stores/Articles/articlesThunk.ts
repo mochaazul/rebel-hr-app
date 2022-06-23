@@ -1,18 +1,16 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import {
-  ArticleDetail, PayloadArticle
-} from 'interface';
-import { apiCall } from 'utils';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { ArticleDetail, PayloadArticle } from 'interface';
 import { endpoints } from 'constant';
-import thunkWrapper from 'utils/thunk';
+import thunkUtils from 'utils/thunk';
 
-export const getArticles = thunkWrapper<ArticleDetail[]>({
+export const getArticles = thunkUtils<ArticleDetail[]>({
   type: 'articles/getArticles',
   method: 'GET',
-  queryParam: {
-    page: 0,
-    limit: 4
-  },
+  endpoint: endpoints.article,
+  // queryParam: {
+  //   page: 0,
+  //   limit: 20
+  // },
   // onSuccess({response, dispatch}) {
   //   console.log(response, dispatch)
   // },
@@ -21,62 +19,23 @@ export const getArticles = thunkWrapper<ArticleDetail[]>({
   // }
 });
 
-// export const getArticles = createAsyncThunk('articles/getArticles', async({ page = 0, limit = 20 }: Pagination, thunkAPI) => {
-//   try {
-//     const { user: { user: { accessToken } } } = await thunkAPI.getState() as RootState;
-//     const response = await apiCall<ArticleDetail[]>({
-//       endpoint: `${ endpoints.article }?${ generateQueryString({
-//         page,
-//         limit,
-//         sort: 'ASC'
-//       }) }`,
-//       method: 'GET',
-//       token: accessToken
-//     });
-//     return response;
-//   } catch (error) {
-//     return thunkAPI.rejectWithValue(error);
-//   }
-// });
-
-export const addArticle = createAsyncThunk('articles/addArticle', async(payload: PayloadArticle, thunkAPI) => {
-  try {
-    const response = await apiCall<ArticleDetail>({
-      endpoint: endpoints.article,
-      method: 'POST',
-      payload
-    });
-    await thunkAPI.dispatch(getArticles({}));
-    return response;
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error);
-  }
+export const addArticle = thunkUtils<PayloadArticle>({
+  type: 'articles/addArticle',
+  endpoint: endpoints.article,
+  method: 'POST',
+  onSuccess: ({ response, dispatch }) => dispatch(getArticles({})),
 });
 
-export const updateArticle = createAsyncThunk('articles/updateArticle', async(payload: PayloadArticle, thunkAPI) => {
-  try {
-    const response = await apiCall<ArticleDetail>({
-      endpoint: `${endpoints.article}/${payload.id}`,
-      method: 'PUT',
-      payload
-    });
-    await thunkAPI.dispatch(getArticles({}));
-    return response;
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error);
-  }
+export const updateArticle = thunkUtils<PayloadArticle>({
+  type: 'articles/updateArticle',
+  endpoint: endpoints.article,
+  method: 'PUT',
+  onSuccess: ({ response, dispatch }) => dispatch(getArticles({})),
 });
 
-export const deleteArticle = createAsyncThunk('articles/deleteArticle', async(payload: PayloadArticle, thunkAPI) => {
-  try {
-    const response = await apiCall<ArticleDetail>({
-      endpoint: `${endpoints.article}/${payload.id}`,
-      method: 'DELETE',
-      payload
-    });
-    await thunkAPI.dispatch(getArticles({}));
-    return response;
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error);
-  }
+export const deleteArticle = thunkUtils<PayloadArticle>({
+  type: 'articles/deleteArticle',
+  endpoint: endpoints.article,
+  method: 'DELETE',
+  onSuccess: ({ response, dispatch }) => dispatch(getArticles({})),
 });

@@ -1,44 +1,48 @@
-import {
-  AsyncThunk, createAsyncThunk, ThunkAction, ThunkDispatch
-} from '@reduxjs/toolkit';
-import { endpoints } from 'constant';
+import { createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit';
 import { generateQueryString } from 'helpers';
 import { Pagination } from 'interface';
-import { AppDispatch, store } from 'stores';
 import { apiCall } from './api';
 
-type wrapperType<T> = {
+type ThunkUtilsType  = {
   type        : string;
   queryParam? : Record<any, any>;
   pagination? : Pagination;
-  method      : 'GET' | 'POST';
+  method      : 'GET' | 'POST' | 'PUT' | 'DELETE';
   onSuccess?  : (param: {response:unknown, dispatch: ThunkDispatch<any, any, any>}) => void;
   onFailed?   : (param: {error:unknown, dispatch: ThunkDispatch<any, any, any>}) => void;
+  endpoint    : string;
 }
 
-type RequestOptionGenericType = Pagination | Record<any, any>
+type RequestOptionGenericType <T>= {
+  pagination?: Pagination;
+  payload? : T;
+  queryParam? : Record<any, any>;
+  id?: number;
+}
 
-const thunkWrapper = <T, T2 extends RequestOptionGenericType = RequestOptionGenericType>({
+const thunkUtils = <T, T2 extends RequestOptionGenericType<T2> = RequestOptionGenericType<T> >({
   type,
   method,
   queryParam,
   pagination,
   onSuccess,
-  onFailed
-}:wrapperType<T>) => {
+  onFailed,
+  endpoint
+}:ThunkUtilsType) => {
   
-  return createAsyncThunk(type, async(override:T2, thunkAPI) => {
+  return createAsyncThunk(type, async(args:T2, thunkAPI) => {
     try {
-      thunkAPI.dispatch;
-      const safeQueryParam = Object.keys(override).length !== 0 ? { ...override } : {
-        ...queryParam,
-        ...pagination
-      };
-
+      const safeQueryParam = args.queryParam ? args.queryParam : queryParam ? queryParam : {};
+      const safePagination = args.pagination ? args.pagination : pagination ? pagination : {};
+      const safeEndpoint   = args.id ? `${endpoint}/${args.id}` : endpoint;
       const response = await apiCall<T>({
-        endpoint: `${ endpoints.article }?${ generateQueryString({ ...safeQueryParam })
+        endpoint: `${ safeEndpoint }?${ generateQueryString({
+          ...safeQueryParam,
+          ...safePagination
+        })
         }`,
-        method
+        method,
+        payload: { ...args.payload }
       });
       if (onSuccess) onSuccess({
         response,
@@ -56,4 +60,4 @@ const thunkWrapper = <T, T2 extends RequestOptionGenericType = RequestOptionGene
   );
 };
 
-export default thunkWrapper;
+export default thunkUtils;
