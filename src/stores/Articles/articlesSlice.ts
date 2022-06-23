@@ -1,14 +1,14 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
-import { ArticleDetail, StatusResponse } from 'interface';
+import { ArticleState, ResponseStatus } from 'interface';
 
 import {
   getArticles, addArticle, updateArticle, deleteArticle
 } from './articlesThunk';
 
-const initialState = {
-  articles: [] as ArticleDetail[],
+const initialState: ArticleState = {
+  articles: [],
   loading: false,
-  error: {} as StatusResponse
+  error: {}
 };
 
 export const articleSlice = createSlice({
@@ -30,16 +30,16 @@ export const articleSlice = createSlice({
     builder.addMatcher(
       isAnyOf(updateArticle.rejected, getArticles.rejected,
         addArticle.rejected, deleteArticle.rejected), (state, action) => {
-        state.loading = false;
-        state.error = action.payload as StatusResponse;
-      });
+          state.loading = false;
+          state.error = action.payload as ResponseStatus;
+        });
 
     builder.addMatcher(
       isAnyOf(updateArticle.pending, getArticles.pending,
         addArticle.pending, deleteArticle.pending), state => {
-        state.loading = true;
-        state.error = initialState.error;
-      });
+          state.loading = true;
+          state.error = initialState.error;
+        });
   }
 });
 

@@ -1,14 +1,17 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import { useAppDispatch, useTypedSelector } from 'hooks';
+import {
+  useAppDispatch, useCustomDispatch, useTypedSelector
+} from 'hooks';
 import { useEffect, useState } from 'react';
 
 import {
-  getArticles, addArticle, updateArticle, deleteArticle
+  getArticles, addArticle, updateArticle, deleteArticle, selectAllData
 } from 'stores/actions';
 import {
   createFieldConfig, maxLengthRule, minLengthRule, navigation, requiredRule
 } from 'helpers';
+import { Pagination } from 'interface';
 
 enum ModalType {
   INIT,
@@ -47,7 +50,8 @@ export const addArticleField = {
 };
 
 const useDashboard = () => {
-  const { articles, loading: loadingArticle } = useTypedSelector(state => state.articles);
+  const { articles: x, loading: loadingArticle } = useTypedSelector(state => state.articles);
+  const articles = useTypedSelector(state => selectAllData(state.articles));
   const dispatch = useAppDispatch();
   const { navigate } = navigation();
 
@@ -55,17 +59,14 @@ const useDashboard = () => {
   const [limit, setLimit] = useState(20);
   const [modalVisible, setModalVisible] = useState<ModalType>(ModalType.INIT);
   const [idArticle, setIdArticle] = useState(0);
+  const fetchArticle = useCustomDispatch<Pagination>(getArticles);
 
   useEffect(() => {
-    dispatch(getArticles({
+    fetchArticle({
       page: offset,
       limit
-    }));
-  }, [
-    dispatch,
-    offset,
-    limit
-  ]);
+    });
+  }, [offset, limit]);
 
   const onChangeLimit = (e?: React.ChangeEvent<HTMLSelectElement>) => {
     if (e) {
