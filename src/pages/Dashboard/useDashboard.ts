@@ -58,8 +58,7 @@ const useDashboard = () => {
 
   useEffect(() => {
     dispatch(getArticles({
-      page: offset,
-      limit
+      limit: 1
     }));
   }, [
     dispatch,
