@@ -11,3 +11,8 @@ export interface UserData {
 	name?: string;
 	roles?: string[];
 }
+
+export type LoginType = {
+	username: string;
+	password: string;
+};

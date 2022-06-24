@@ -25,3 +25,10 @@ export enum StatusCode {
     SUCCESS = 200,
     FAILED = 400,
 }
+
+export type RequestOptionGenericType <T>= {
+    pagination?: Pagination;
+    payload? : T;
+    queryParam? : Record<any, any>;
+    id?: number;
+  }
