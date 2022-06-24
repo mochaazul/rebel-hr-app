@@ -1,6 +1,6 @@
 # React JS Skeleton Docs
 
-> Documentation on Progress
+> Documentation IS INCOMPLETE
 
 ## Table of Contents
 - [React JS Skeleton Docs](#react-js-skeleton-docs)
