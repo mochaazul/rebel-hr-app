@@ -26,14 +26,12 @@ export const articleSlice = createSlice({
     builder.addCase(updateArticle.fulfilled, state => {
       state.loading = false;
     });
-
     builder.addMatcher(
       isAnyOf(updateArticle.rejected, getArticles.rejected,
         addArticle.rejected, deleteArticle.rejected), (state, action) => {
         state.loading = false;
         state.error = action.payload as ResponseStatus;
       });
-
     builder.addMatcher(
       isAnyOf(updateArticle.pending, getArticles.pending,
         addArticle.pending, deleteArticle.pending), state => {

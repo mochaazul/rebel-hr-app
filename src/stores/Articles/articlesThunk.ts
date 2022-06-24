@@ -8,8 +8,7 @@ export const getArticles = thunkUtils<ArticleDetail[], PayloadArticle>({
   method: 'GET',
   endpoint: endpoints.article,
 });
-
-export const addArticle = thunkUtils<ArticleDetail, PayloadArticle>({
+export const addArticle = thunkUtils<PayloadArticle>({
   type: 'articles/addArticle',
   endpoint: endpoints.article,
   method: 'POST',

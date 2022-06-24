@@ -1,46 +1,284 @@
-# Getting Started with Create React App
+# React JS Skeleton Docs
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> Documentation on Progress
 
-## Available Scripts
+## Table of Contents
+- [React JS Skeleton Docs](#react-js-skeleton-docs)
+  - [Table of Contents](#table-of-contents)
+  - [Project Structure](#project-structure)
+  - [Routing Tree](#routing-tree)
+  - [Installed Library](#installed-library)
+  - [Styling 3rd Party Component](#styling-3rd-party-component)
+  - [Styling UI Library Component](#styling-ui-library-component)
+  - [Utilities Functions](#utilities-functions)
+  - [Helper Functions](#helper-functions)
+  - [Hooks](#hooks)
+      - [Usage](#usage)
+      - [Usage](#usage-1)
+      - [Usage](#usage-2)
 
-In the project directory, you can run:
 
-### `npm start`
+## Project Structure
+```
+├── docs               # Docs
+├── public             # Test files (alternatively `spec` or `tests`)
+│    ├── benchmarks    # Load and stress tests
+│    ├── integration   # End-to-end, integration tests (alternatively `e2e`)
+│    └── unit          # Unit tests
+├── src 
+│    ├── assets        # Assets files (image/vector/etc..)
+│    ├── components    # globally shared components
+│    ├── constant      # constant values ex: language config, colors, endpoints
+│    ├── helpers       # Helper functions ex: localStorage Handler,query string generator
+│    ├── hooks         # Custom hooks
+│    ├── interface     # Custom interfaces
+│    ├── pages         # Pages Components
+│    ├── routes        # Routes Components including auth components
+│    ├── stores        # Redux Logic
+│    ├── utils         # Utility Functions ex: apiCalls Handler
+├── .eslintrc.js       # Eslint configuration, Contact Author For modifying
+├── tsconfig.json      # TS configuration Contact Author For modifying
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+> Do not forget to install ESLint Extension if Using VSCode : [Extension Page](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Routing Tree
 
-### `npm run build`
+```plantuml
+@startwbs
+* App.tsx
+** Auth Route <AuthRoutes />
+*** /login <LoginPage />
+** Private Routes <PrivateRoute />
+*** /dashboard
+**** <Dashboard />
+*** /pokemon-detail
+**** <Detail />
+@endwbs
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+> All children inside Private Routes need access token
+## Installed Library
+-   Styling: Styled Components 
+-   State Management: Local state and Redux Toolkit
+-   Routing: React Router Dom - V6
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Styling 3rd Party Component
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Please use Styled component way to style 3rd party component instead using plain CSS or In-line style
+[Styling any component](https://styled-components.com/docs/basics#styling-any-component)
 
-### `npm run eject`
+```jsx
+// This could be react-router-dom's Link for example
+const Link = ({ className, children }) => (
+  <a className={className}>
+    {children}
+  </a>
+);
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+const StyledLink = styled(Link)`
+  color: palevioletred;
+  font-weight: bold;
+`;
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+render(
+  <div>
+    <Link>Unstyled, boring Link</Link>
+    <br />
+    <StyledLink>Styled, exciting Link</StyledLink>
+  </div>
+);
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Styling UI Library Component
+- ### Ant Design Component
+```javascript
+import { Tag } from 'antd';
+import Styled from 'styled-components';
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+type Props = { 
+  height?    : string;
+  minWidth?  : string;
+  cursor?    : string;
+}
 
-## Learn More
+export const StyledTag = Styled(Tag)<Props>`
+  # Style Properties without any css selector 
+  # Will be applied directly on to the Component
+  # This will rendered equivalent to
+  # <Tag style={{}} />
+  height           : ${props => props.height ? props.height : '32px'};
+  border-radius    : 16px;
+  display          : flex;
+  align-items      : center;
+  min-width        : ${ props => props.minWidth ? props.minWidth :  '150px'};
+  padding-left     : 7px;
+  
+  ${props => props.cursor && `cursor:${props.cursor};`}
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+  # Style with a selector will be applied on to 
+  # Component children
+  # in this case will be
+  # <Tag> <p> </p> </Tag> 
+  # the p tag will be styled with margin-left: 5px;
+  p {
+    margin-left: 5px;
+  }
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+  .tagging-icon {
+    margin-right: 5px;
+  }
+`;
+
+```
+- ### Material UI Component
+```jsx=
+// component/Button/style.ts
+import Button from '@mui/material/Button';
+import Styled from 'styled-components';
+
+export const StyledButton = Styled(Button)`
+    background-color: #2b2b2b;
+    
+    :hover{
+      background-color: #3b3b3b;
+    }
+`
+```
+## Utilities Functions
+- ### A
+- ### ApiCall Function
+    > :bulb: Please use this utilites function to make **ANY** Network request call
+   
+    | Argument | Type       | Nullable? | Description       |
+    | -------- | ---------- | --------- | ----------------- |
+    | token    | `string`   | Yes       |  JWT Access Token |
+    | baseUrl  | `string`   | Yes       |  Base Url string if not provided it will take base url from `src/config.ts` |
+    | endpoint | `string`   | No        |  Endpoint path, example `/products` |
+    | header   | `object`   | Yes       |  Request header , example `{ "accessToken" : "Bearer accessTokenString" }` |
+    | method   |  `GET` `POST` `DELETE` `PUT` `PATCH`   | No  | Request HTML Method |
+    | payload  | `object`   | Yes       |  Request HTML Payload  |
+
+
+
+## Helper Functions
+- ### History function
+    History function used to navigate between routes
+    ```javascript
+    // src/helpers/history.ts
+    const History: CustomHistory = {
+      navigate: null,
+      push: (page:any, options?:NavigateOptions)  => {
+        if (History.navigate) {
+          History.navigate(page, options);
+        }
+      },
+    };
+    ```
+    #### Usage
+   ```javascript
+    import History from 'helpers/history'
+    
+    History.push("/dashboard") <- this will push "/dasboard" to history API
+   ```    
+    > History object will be accessible within the app, even when used outside react life-cycle like in redux actions
+## Hooks
+
+- ### useAppDispatch
+  A hook to access the redux dispatch function.
+  
+  #### Usage
+
+```jsx
+import React, { useCallback } from 'react'
+import { useAppDispatch } from 'hooks'
+
+export const Dashboard = ({ value }) => {
+  const dispatch = useAppDispatch()
+  const handleGetArticle = useCallback(() => dispatch(getArticles), [])
+  return (
+    <div>
+      <span>{value}</span>
+      <button onClick={handleGetArticle}>Increase counter</button>
+    </div>
+  )
+}
+```
+- ### useTypedSelector
+  A hook to access the redux store's. This hook takes a selector function as an argument. The selector is called with the store state.
+  
+  #### Usage
+
+```jsx
+  import React from 'react'
+  import { useTypedSelector } from 'hooks'
+  
+  export const Dashboard = () => {
+      const { articles, loading: loadingArticle } = useTypedSelector(state => state.articles);
+      return (
+          <ul>
+            {articles.map}
+          </ul>
+      )
+  }
+```
+- ### usePrevious
+  A hook to access previous value of props or state
+  
+
+    | Argument | Type       | Nullable? | Description |
+    | -------- | ---------- | --------- | ------- |
+    | value    | `any`   | No       |  The state / props that needs to be tracked |
+  
+  #### Usage
+  
+```jsx
+  import React from 'react'
+  import { usePrevious } from 'hooks'
+  
+  export const Counter = () => {
+      const [count, setCount] = useState(0);
+      const prevCount = usePrevious(count);
+  
+      const handleClick = () => {
+        setCount(count => count + 1);
+      };
+
+      return (
+        <div>Current count: {count}, Previous count: {prevCount}
+          <button onClick={handleClick}>Increment</button>
+        </div>
+      )
+  }
+```
+- ### useCountDown
+   A custom hook that is used to create a countdown timer. 
+   
+    | Argument | Type       | Nullable? | Description |
+    | -------- | ---------- | --------- | ------- |
+    | countdownDate    | `number`   | No       |  The date in milliseconds that you want to countdown |
+    
+    #### Usage
+    
+```jsx
+  import React from 'react'
+  import { useCountDown } from 'hooks'
+  
+  export const Counter = () => {
+      const { hasStopped, valueCountDown, stopCountdown } = useCountdownTimer(100000);
+      
+      if(hasStopped) {
+          return (
+            <div>Countdown has stopped</div>
+          )
+      }
+
+      return (
+        <div> Time: { valueCountDown.minutes} : {valueCountDown.seconds}
+          <button onClick={stopCountdown}>Stop</button>
+        </div>
+      )
+  }
+```
