@@ -8,12 +8,9 @@ import {
 import {
   createFieldConfig, maxLengthRule, minLengthRule, navigation, requiredRule
 } from 'helpers';
-<<<<<<< HEAD
 import {
   ArticleState, Pagination, PayloadArticle
 } from 'interface';
-=======
->>>>>>> d29a965 ([Cleanup] Cleaning up spaces linter)
 
 enum ModalType {
   INIT,
@@ -52,14 +49,7 @@ export const addArticleField = {
 };
 
 const useDashboard = () => {
-<<<<<<< HEAD
   const { articles, loading: loadingArticle }  = useTypedSelector<ArticleState>('articles');
-=======
-  const { loading: loadingArticle } = useTypedSelector(state => state.articles);
-  const articles = useTypedSelector(state => selectAllData(state.articles, {}));
-  
-  const dispatch = useAppDispatch();
->>>>>>> d29a965 ([Cleanup] Cleaning up spaces linter)
   const { navigate } = navigation();
 
   const [offset, setOffset] = useState(0);
@@ -67,14 +57,10 @@ const useDashboard = () => {
   const [modalVisible, setModalVisible] = useState<ModalType>(ModalType.INIT);
   const [idArticle, setIdArticle] = useState(0);
 
-<<<<<<< HEAD
   const fetchArticle = useAppDispatch<Pagination>(getArticles);
   const addArticle = useAppDispatch<PayloadArticle>(addArticleAction);
   const updateArticle = useAppDispatch<PayloadArticle>(updateArticleAction);
   const deleteArticle = useAppDispatch<PayloadArticle>(deleteArticleAction);
-=======
-  const fetchArticle = useCustomDispatch(getArticles);
->>>>>>> d29a965 ([Cleanup] Cleaning up spaces linter)
 
   useEffect(() => {
     fetchArticle({
@@ -120,17 +106,9 @@ const useDashboard = () => {
       is_publish: true
     };
     modalVisible === ModalType.ADD ?
-<<<<<<< HEAD
       addArticle({ payload: { ...payload } }) :
       updateArticle({
         payload: { ...payload },
-=======
-
-      dispatch(addArticle({ payload })) :
-
-      dispatch(updateArticle({
-        payload,
->>>>>>> d29a965 ([Cleanup] Cleaning up spaces linter)
         id: idArticle
       });
     setModalVisible(ModalType.INIT);

@@ -32,10 +32,6 @@ export const articleSlice = createSlice({
         state.loading = false;
         state.error = action.payload as ResponseStatus;
       });
-<<<<<<< HEAD
-
-=======
->>>>>>> d29a965 ([Cleanup] Cleaning up spaces linter)
     builder.addMatcher(
       isAnyOf(updateArticle.pending, getArticles.pending,
         addArticle.pending, deleteArticle.pending), state => {
