@@ -16,13 +16,13 @@ export const addArticle = thunkUtils<ArticleDetail, PayloadArticle>({
   //   page: 0,
   //   limit: 20
   // },
-  onSuccess({ response, dispatch }) {
-    // console.log(response, dispatch);
-    // dispatch(addArticle({}));
-  },
-  onFailed({ error, dispatch }) {
-    console.log(error, dispatch);
-  }
+  // onSuccess({ response, dispatch }) {
+  //   // console.log(response, dispatch);
+  //   // dispatch(addArticle({}));
+  // },
+  // onFailed({ error, dispatch }) {
+  //   console.log(error, dispatch);
+  // }
 });
 export const addArticle = thunkUtils<PayloadArticle>({
 >>>>>>> d29a965 ([Cleanup] Cleaning up spaces linter)
