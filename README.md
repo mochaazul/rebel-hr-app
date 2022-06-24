@@ -44,22 +44,6 @@
 > Do not forget to install ESLint Extension if Using VSCode : [Extension Page](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 
 
-## Routing Tree
-
-```plantuml
-@startwbs
-* App.tsx
-** Auth Route <AuthRoutes />
-*** /login <LoginPage />
-** Private Routes <PrivateRoute />
-*** /dashboard
-**** <Dashboard />
-*** /pokemon-detail
-**** <Detail />
-@endwbs
-```
-
-> All children inside Private Routes need access token
 ## Installed Library
 -   Styling: Styled Components 
 -   State Management: Local state and Redux Toolkit
@@ -95,46 +79,46 @@ render(
 ## Styling UI Library Component
 - ### Ant Design Component
 ```javascript
-import { Tag } from 'antd';
-import Styled from 'styled-components';
+   import { Tag } from 'antd';
+   import Styled from 'styled-components';
 
-type Props = { 
-  height?    : string;
-  minWidth?  : string;
-  cursor?    : string;
-}
-
-export const StyledTag = Styled(Tag)<Props>`
-  # Style Properties without any css selector 
-  # Will be applied directly on to the Component
-  # This will rendered equivalent to
-  # <Tag style={{}} />
-  height           : ${props => props.height ? props.height : '32px'};
-  border-radius    : 16px;
-  display          : flex;
-  align-items      : center;
-  min-width        : ${ props => props.minWidth ? props.minWidth :  '150px'};
-  padding-left     : 7px;
-  
-  ${props => props.cursor && `cursor:${props.cursor};`}
-
-  # Style with a selector will be applied on to 
-  # Component children
-  # in this case will be
-  # <Tag> <p> </p> </Tag> 
-  # the p tag will be styled with margin-left: 5px;
-  p {
-    margin-left: 5px;
+  type Props = { 
+    height?    : string;
+    minWidth?  : string;
+    cursor?    : string;
   }
 
-  .tagging-icon {
-    margin-right: 5px;
-  }
-`;
+  export const StyledTag = Styled(Tag)<Props>`
+    # Style Properties without any css selector 
+    # Will be applied directly on to the Component
+    # This will rendered equivalent to
+    # <Tag style={{}} />
+    height           : ${props => props.height ? props.height : '32px'};
+    border-radius    : 16px;
+    display          : flex;
+    align-items      : center;
+    min-width        : ${ props => props.minWidth ? props.minWidth :  '150px'};
+    padding-left     : 7px;
+    
+    ${props => props.cursor && `cursor:${props.cursor};`}
+
+    # Style with a selector will be applied on to 
+    # Component children
+    # in this case will be
+    # <Tag> <p> </p> </Tag> 
+    # the p tag will be styled with margin-left: 5px;
+    p {
+      margin-left: 5px;
+    }
+
+    .tagging-icon {
+      margin-right: 5px;
+    }
+  `;
 
 ```
 - ### Material UI Component
-```jsx=
+```jsx
 // component/Button/style.ts
 import Button from '@mui/material/Button';
 import Styled from 'styled-components';
@@ -148,7 +132,6 @@ export const StyledButton = Styled(Button)`
 `
 ```
 ## Utilities Functions
-- ### A
 - ### ApiCall Function
     > :bulb: Please use this utilites function to make **ANY** Network request call
    
