@@ -1,13 +1,15 @@
 import React from 'react';
 import { Text } from 'components';
-import { useTypedSelector, useCustomDispatch } from 'hooks';
-import { removeUser as removeUserData } from 'stores/actions';
+import { useTypedSelector, useAppDispatch } from 'hooks';
+import { removeUser as removeUserData, editName as editNameAction } from 'stores/actions';
 import { navigation } from 'helpers';
 import LandingPageStyle from './style';
+import { UserData } from 'interface';
 
-const LandingPage: React.FC = () => {
-  const { user } = useTypedSelector(state => state.user);
-  const removeUser = useCustomDispatch(removeUserData);
+const LandingPage = () => {
+  const { user }  = useTypedSelector('user');
+  const removeUser = useAppDispatch(removeUserData);
+  const editName = useAppDispatch<UserData>(editNameAction);
   const { navigate } = navigation();
 
   const text = user.accessToken ? 'Logout' : 'Login';
@@ -21,7 +23,7 @@ const LandingPage: React.FC = () => {
 
   return (
     <LandingPageStyle>
-      <Text.H1>Welcome { user.name }</Text.H1>
+      <Text.H1 onClick={ () => editName({ name: 'Mansyur' }) }>Welcome { user.name }</Text.H1>
       <Text.Paragraph onClick={ handleClick }>{ text }</Text.Paragraph>
     </LandingPageStyle>
   );

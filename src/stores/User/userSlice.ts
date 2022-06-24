@@ -22,6 +22,9 @@ export const userSlice = createSlice({
     removeUser: state => {
       state.user = initialState.user;
       localStorage.clearToken();
+    },
+    editName: (state, action) => {
+      state.user.name = action.payload.name;
     }
   },
   // extraReducers allows createSlice to respond to other action types besides the types it has generated.
@@ -42,5 +45,5 @@ export const userSlice = createSlice({
   }
 });
 
-export const { removeUser } = userSlice.actions;
+export const { removeUser, editName } = userSlice.actions;
 export { login };

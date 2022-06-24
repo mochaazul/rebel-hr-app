@@ -30,16 +30,16 @@ export const articleSlice = createSlice({
     builder.addMatcher(
       isAnyOf(updateArticle.rejected, getArticles.rejected,
         addArticle.rejected, deleteArticle.rejected), (state, action) => {
-          state.loading = false;
-          state.error = action.payload as ResponseStatus;
-        });
+        state.loading = false;
+        state.error = action.payload as ResponseStatus;
+      });
 
     builder.addMatcher(
       isAnyOf(updateArticle.pending, getArticles.pending,
         addArticle.pending, deleteArticle.pending), state => {
-          state.loading = true;
-          state.error = initialState.error;
-        });
+        state.loading = true;
+        state.error = initialState.error;
+      });
   }
 });
 

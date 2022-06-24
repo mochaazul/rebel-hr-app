@@ -1,2 +1,3 @@
 import { apiCall } from './api';
-export { apiCall };
+import { thunkUtils } from './thunk';
+export { apiCall, thunkUtils };

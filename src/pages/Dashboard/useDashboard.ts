@@ -1,17 +1,16 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
-import {
-  useAppDispatch, useCustomDispatch, useTypedSelector
-} from 'hooks';
-import { useEffect, useState } from 'react';
+import { useAppDispatch, useTypedSelector } from 'hooks';
+import React, { useEffect, useState } from 'react';
 
 import {
-  getArticles, addArticle, updateArticle, deleteArticle, selectAllData
+  getArticles, addArticle as addArticleAction, updateArticle as updateArticleAction, deleteArticle as deleteArticleAction
 } from 'stores/actions';
 import {
   createFieldConfig, maxLengthRule, minLengthRule, navigation, requiredRule
 } from 'helpers';
-import { Pagination } from 'interface';
+import {
+  ArticleState, Pagination, PayloadArticle
+} from 'interface';
 
 enum ModalType {
   INIT,
@@ -50,21 +49,25 @@ export const addArticleField = {
 };
 
 const useDashboard = () => {
-  const { articles: x, loading: loadingArticle } = useTypedSelector(state => state.articles);
-  const articles = useTypedSelector(state => selectAllData(state.articles));
-  const dispatch = useAppDispatch();
+  const { articles, loading: loadingArticle }  = useTypedSelector<ArticleState>('articles');
   const { navigate } = navigation();
 
   const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(20);
   const [modalVisible, setModalVisible] = useState<ModalType>(ModalType.INIT);
   const [idArticle, setIdArticle] = useState(0);
-  const fetchArticle = useCustomDispatch<Pagination>(getArticles);
+
+  const fetchArticle = useAppDispatch<Pagination>(getArticles);
+  const addArticle = useAppDispatch<PayloadArticle>(addArticleAction);
+  const updateArticle = useAppDispatch<PayloadArticle>(updateArticleAction);
+  const deleteArticle = useAppDispatch<PayloadArticle>(deleteArticleAction);
 
   useEffect(() => {
     fetchArticle({
-      page: offset,
-      limit
+      payload: {
+        page: offset,
+        limit
+      }
     });
   }, [offset, limit]);
 
@@ -103,16 +106,16 @@ const useDashboard = () => {
       is_publish: true
     };
     modalVisible === ModalType.ADD ?
-      dispatch(addArticle({ payload })) :
-      dispatch(updateArticle({
-        payload,
+      addArticle({ payload: { ...payload } }) :
+      updateArticle({
+        payload: { ...payload },
         id: idArticle
-      }));
+      });
     setModalVisible(ModalType.INIT);
   };
 
   const onDeleteArticle = (id: number) => {
-    dispatch(deleteArticle({ id }));
+    deleteArticle({ id });
   };
 
   return {

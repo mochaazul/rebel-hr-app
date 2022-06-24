@@ -1,6 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
-import { login } from 'stores/actions';
+import { login as loginAction } from 'stores/actions';
 import { useAppDispatch } from 'hooks';
 import {
   requiredRule,
@@ -9,6 +7,7 @@ import {
   createFieldConfig,
   emailRule
 } from 'helpers';
+import { LoginType } from 'interface';
 
 export const loginField = {
   email: {
@@ -37,32 +36,18 @@ export const loginField = {
 };
 
 const useLoginPage = () => {
-
-  const dispatch = useAppDispatch();
-  const [loginForm, setLoginForm] = useState({
-    username: '',
-    password: ''
-  });
+  const login = useAppDispatch<LoginType>(loginAction);
   const onClickLogin = ({ username, password }: any) => {
-    dispatch(login({
-      username,
-      password
-    }));
-  };
-
-  const onChangeInput = (e?: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined) => {
-    if (e) {
-      const { name, value } = e.target;
-      setLoginForm({
-        ...loginForm,
-        [name]: value
-      });
-    }
+    login({
+      payload: {
+        username,
+        password
+      }
+    });
   };
 
   return {
     onClickLogin,
-    onChangeInput,
     loginField
   };
 };

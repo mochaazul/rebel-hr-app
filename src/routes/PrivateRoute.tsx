@@ -4,10 +4,11 @@ import {
   Navigate,
   Outlet
 } from 'react-router-dom';
+import { UserState } from 'interface';
 
 const PrivateRoute = () => {
 
-  const { user } = useTypedSelector(state => state.user);
+  const { user } = useTypedSelector<UserState>('user');
 
   if (user.accessToken) {
     return <Outlet />;
