@@ -194,19 +194,19 @@ export const Dashboard = ({ value }) => {
   
   #### Usage
 
-```jsx
-  import React from 'react'
-  import { useTypedSelector } from 'hooks'
-  
-  export const Dashboard = () => {
-      const { articles, loading: loadingArticle } = useTypedSelector(state => state.articles);
-      return (
-          <ul>
-            {articles.map}
-          </ul>
-      )
-  }
-```
+  ```jsx
+    import React from 'react'
+    import { useTypedSelector } from 'hooks'
+    
+    export const Dashboard = () => {
+        const { articles, loading: loadingArticle } = useTypedSelector(state => state.articles);
+        return (
+            <ul>
+              {articles.map}
+            </ul>
+        )
+    }
+  ```
 - ### usePrevious
   A hook to access previous value of props or state
   
@@ -217,25 +217,25 @@ export const Dashboard = ({ value }) => {
   
   #### Usage
   
-```jsx
-  import React from 'react'
-  import { usePrevious } from 'hooks'
+  ```jsx
+    import React from 'react'
+    import { usePrevious } from 'hooks'
   
-  export const Counter = () => {
-      const [count, setCount] = useState(0);
-      const prevCount = usePrevious(count);
+    export const Counter = () => {
+        const [count, setCount] = useState(0);
+        const prevCount = usePrevious(count);
   
-      const handleClick = () => {
-        setCount(count => count + 1);
-      };
+        const handleClick = () => {
+          setCount(count => count + 1);
+        };
 
-      return (
-        <div>Current count: {count}, Previous count: {prevCount}
-          <button onClick={handleClick}>Increment</button>
-        </div>
-      )
-  }
-```
+        return (
+          <div>Current count: {count}, Previous count: {prevCount}
+            <button onClick={handleClick}>Increment</button>
+          </div>
+        )
+    }
+  ```
 - ### useCountDown
    A custom hook that is used to create a countdown timer. 
    
@@ -245,11 +245,11 @@ export const Dashboard = ({ value }) => {
     
     #### Usage
     
-```jsx
-  import React from 'react'
-  import { useCountDown } from 'hooks'
-  
-  export const Counter = () => {
+    ```jsx
+    import React from 'react'
+    import { useCountDown } from 'hooks'
+    
+    export const Counter = () => {
       const { hasStopped, valueCountDown, stopCountdown } = useCountdownTimer(100000);
       
       if(hasStopped) {
@@ -263,5 +263,5 @@ export const Dashboard = ({ value }) => {
           <button onClick={stopCountdown}>Stop</button>
         </div>
       )
-  }
-```
+    }
+    ```
