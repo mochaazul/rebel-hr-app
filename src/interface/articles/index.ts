@@ -5,6 +5,7 @@ export interface ArticleState {
     loading: boolean;
     error: ResponseStatus;
 }
+
 export interface ArticleDetail {
     id: number;
     title: string;

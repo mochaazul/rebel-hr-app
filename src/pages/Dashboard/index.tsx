@@ -4,9 +4,9 @@ import {
   ContentModal, DashoardStyle, FloatingButton, Modal
 } from './style';
 import { Button, Form } from 'components';
-import { logger } from 'helpers';
 
 const Dashboard:React.FC = () => {
+
   const {
     articles,
     limit,
@@ -25,7 +25,6 @@ const Dashboard:React.FC = () => {
     registeredValue, onSubmit, setFieldsValue, resetFieldsValue
   } = Form.useForm({ fields: addArticleField });
 
-  logger('from logger');
   const renderPostList = () => {
     if (!articles?.length) return null;
 
