@@ -7,25 +7,8 @@ export const getArticles = thunkUtils<ArticleDetail[], PayloadArticle>({
   type: 'articles/getArticles',
   method: 'GET',
   endpoint: endpoints.article,
-<<<<<<< HEAD
-});
-
-export const addArticle = thunkUtils<ArticleDetail, PayloadArticle>({
-=======
-  // queryParam: {
-  //   page: 0,
-  //   limit: 20
-  // },
-  // onSuccess({ response, dispatch }) {
-  //   // console.log(response, dispatch);
-  //   // dispatch(addArticle({}));
-  // },
-  // onFailed({ error, dispatch }) {
-  //   console.log(error, dispatch);
-  // }
 });
 export const addArticle = thunkUtils<PayloadArticle>({
->>>>>>> d29a965 ([Cleanup] Cleaning up spaces linter)
   type: 'articles/addArticle',
   endpoint: endpoints.article,
   method: 'POST',
