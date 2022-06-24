@@ -169,75 +169,75 @@ export const StyledButton = Styled(Button)`
     > History object will be accessible within the app, even when used outside react life-cycle like in redux actions
 ## Hooks
 
-- ### useAppDispatch
-  A hook to access the redux dispatch function.
+  - ### useAppDispatch
+    A hook to access the redux dispatch function.
   
-  #### Usage
+    #### Usage
 
-```jsx
-import React, { useCallback } from 'react'
-import { useAppDispatch } from 'hooks'
+    ```jsx
+    import React, { useCallback } from 'react'
+    import { useAppDispatch } from 'hooks'
 
-export const Dashboard = ({ value }) => {
-  const dispatch = useAppDispatch()
-  const handleGetArticle = useCallback(() => dispatch(getArticles), [])
-  return (
-    <div>
-      <span>{value}</span>
-      <button onClick={handleGetArticle}>Increase counter</button>
-    </div>
-  )
-}
-```
-- ### useTypedSelector
-  A hook to access the redux store's. This hook takes a selector function as an argument. The selector is called with the store state.
+    export const Dashboard = ({ value }) => {
+      const dispatch = useAppDispatch()
+      const handleGetArticle = useCallback(() => dispatch(getArticles), [])
+      return (
+        <div>
+          <span>{value}</span>
+          <button onClick={handleGetArticle}>Increase counter</button>
+        </div>
+      )
+    }
+    ```
+  - ### useTypedSelector
+    A hook to access the redux store's. This hook takes a selector function as an argument. The selector is called with the store state.
   
-  #### Usage
+    #### Usage
 
-  ```jsx
-    import React from 'react'
-    import { useTypedSelector } from 'hooks'
+    ```jsx
+      import React from 'react'
+      import { useTypedSelector } from 'hooks'
     
-    export const Dashboard = () => {
-        const { articles, loading: loadingArticle } = useTypedSelector(state => state.articles);
-        return (
-            <ul>
-              {articles.map}
-            </ul>
-        )
-    }
-  ```
-- ### usePrevious
-  A hook to access previous value of props or state
+      export const Dashboard = () => {
+          const { articles, loading: loadingArticle } = useTypedSelector(state => state.articles);
+          return (
+              <ul>
+                {articles.map}
+              </ul>
+          )
+      }
+    ```
+  - ### usePrevious
+    A hook to access previous value of props or state
   
 
-    | Argument | Type       | Nullable? | Description |
-    | -------- | ---------- | --------- | ------- |
-    | value    | `any`   | No       |  The state / props that needs to be tracked |
+      | Argument | Type       | Nullable? | Description |
+      | -------- | ---------- | --------- | ------- |
+      | value    | `any`   | No       |  The state / props that needs to be tracked |
   
-  #### Usage
+    #### Usage
   
-  ```jsx
-    import React from 'react'
-    import { usePrevious } from 'hooks'
+    ```jsx
+      import React from 'react'
+      import { usePrevious } from 'hooks'
   
-    export const Counter = () => {
-        const [count, setCount] = useState(0);
-        const prevCount = usePrevious(count);
+      export const Counter = () => {
+         const [count, setCount] = useState(0);
+          const prevCount = usePrevious(count);
   
-        const handleClick = () => {
-          setCount(count => count + 1);
-        };
+          const handleClick = () => {
+            setCount(count => count + 1);
+          };
 
-        return (
-          <div>Current count: {count}, Previous count: {prevCount}
-            <button onClick={handleClick}>Increment</button>
-          </div>
-        )
-    }
-  ```
-- ### useCountDown
-   A custom hook that is used to create a countdown timer. 
+          return (
+            <div>Current count: {count}, Previous count: {prevCount}
+              <button onClick={handleClick}>Increment</button>
+           </div>
+          )
+      }
+    ```
+  - ### useCountDown
+     A custom hook that is used to create a countdown timer. 
    
     | Argument | Type       | Nullable? | Description |
     | -------- | ---------- | --------- | ------- |
