@@ -1,20 +1,20 @@
 import React from 'react';
 import { Text } from 'components';
-import { useAppDispatch, useTypedSelector } from 'hooks';
-import { removeUser } from 'stores/actions';
+import { useTypedSelector, useCustomDispatch } from 'hooks';
+import { removeUser as removeUserData } from 'stores/actions';
 import { navigation } from 'helpers';
 import LandingPageStyle from './style';
 
-const LandingPage:React.FC = () => {
+const LandingPage: React.FC = () => {
   const { user } = useTypedSelector(state => state.user);
-  const dispatch = useAppDispatch();
+  const removeUser = useCustomDispatch(removeUserData);
   const { navigate } = navigation();
 
   const text = user.accessToken ? 'Logout' : 'Login';
 
   const handleClick = () => {
     if (user.accessToken) {
-      dispatch(removeUser());
+      removeUser();
     }
     navigate('/login');
   };

@@ -36,7 +36,7 @@ export const loginField = {
   },
 };
 
-const useLandingPage = () => {
+const useLoginPage = () => {
 
   const dispatch = useAppDispatch();
   const [loginForm, setLoginForm] = useState({
@@ -67,4 +67,4 @@ const useLandingPage = () => {
   };
 };
 
-export default useLandingPage;
+export default useLoginPage;

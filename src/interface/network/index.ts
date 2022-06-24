@@ -1,8 +1,8 @@
-export interface StatusResponse {
-    stat_code: number;
-    stat_msg: string;
+export interface ResponseStatus {
+    stat_code?: number;
+    stat_msg?: string;
 }
-export interface ResponseType<T> extends StatusResponse {
+export interface ResponseType<T> extends ResponseStatus {
     data: T;
     pagination: Pagination;
 }
@@ -15,7 +15,7 @@ export interface Pagination {
     order?: string;
     page?: number;
     post_type?: string;
-    sort?: "DESC" | "ASC";
+    sort?: 'DESC' | 'ASC';
     status?: string;
     search?: string;
     tag?: string;

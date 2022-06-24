@@ -11,7 +11,7 @@ const initialValues = {
 const useCountDown = (countdownDate: number) => {
   const [valueCountDown, setValueCountDown] = useState(initialValues);
 
-  const [stop, setStop] = useState(false);
+  const [hasStopped, setHasStopped] = useState(false);
   const increment = useRef<any>(null);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const useCountDown = (countdownDate: number) => {
       clearInterval(increment.current);
       setValueCountDown(initialValues);
     };
-  }, [countdownDate, stop]);
+  }, [countdownDate, hasStopped]);
 
   const setNewTime = () => {
     if (countdownDate) {
@@ -60,14 +60,14 @@ const useCountDown = (countdownDate: number) => {
   };
 
   const stopCountdown = (isTimeEnd = false) => {
-    setStop(isTimeEnd);
+    setHasStopped(isTimeEnd);
     clearInterval(increment.current);
     setValueCountDown(initialValues);
   };
 
   return {
     valueCountDown,
-    stop,
+    hasStopped,
     stopCountdown
   };
 };

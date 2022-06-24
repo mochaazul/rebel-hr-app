@@ -1,13 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { StatusResponse, UserData } from 'interface';
+import { ResponseStatus, UserState } from 'interface';
 import { localStorage } from 'helpers';
 import { login } from './userThunk';
 
-const initialState = {
-  user: {} as UserData,
+const initialState: UserState = {
+  user: {},
   loading: false,
-  error: {} as StatusResponse
+  error: {},
 };
 
 /* function that accepts an initial state, an object of reducer functions, and a
@@ -37,7 +37,7 @@ export const userSlice = createSlice({
     });
     builder.addCase(login.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.payload as StatusResponse;
+      state.error = action.payload as ResponseStatus;
     });
   }
 });

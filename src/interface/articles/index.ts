@@ -1,3 +1,10 @@
+import { ResponseStatus } from 'interface';
+
+export interface ArticleState {
+    articles: ArticleDetail[];
+    loading: boolean;
+    error: ResponseStatus;
+}
 export interface ArticleDetail {
     id: number;
     title: string;
@@ -19,5 +26,3 @@ export interface PayloadArticle {
     new_tags?: (string | number)[] | null;
     is_publish?: boolean;
 }
-
-
