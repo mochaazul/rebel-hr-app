@@ -1,5 +1,5 @@
 // 'off' or 0 - turn the rule off
-// 'warn' or 1 - turn the rule on as a warning (doesnâ€™ t affect exit code)
+// 'warn' or 1 - turn the rule on as a warning (doesn’ t affect exit code)
 // 'error' or 1 - turn the rule on as an error (exit code is 1 when triggered)
 // eslint-disable-next-line no-undef
 module.exports = {
@@ -95,35 +95,19 @@ module.exports = {
       },
     ],
     'newline-per-chained-call': 1,
-    'array-bracket-newline': [
-      1, {
-        multiline: true,
-        minItems: 3,
-      },
-    ],
-    'array-element-newline': [1, { minItems: 3 }],
-    'object-property-newline': 1,
+    'object-property-newline': [1, { 'minItems': 5 }],
     'object-curly-newline': [
       1, {
-        ObjectExpression: {
-          multiline: true,
-          minProperties: 3,
+        'ImportDeclaration': {
+          'multiline': true,
+          'minProperties': 5,
         },
-        ObjectPattern: {
-          multiline: true,
-          minProperties: 3,
-        },
-        ImportDeclaration: {
-          multiline: true,
-          minProperties: 3,
-        },
-        ExportDeclaration: {
-          multiline: true,
-          minProperties: 3,
-        },
-      },
+        'ExportDeclaration': {
+          'multiline': true,
+          'minProperties': 5
+        }
+      }
     ],
-    indent: [1, 2],
-    // 'radix': [1, 'as-needed'],
+    indent: [1, 'tab', { 'SwitchCase': 1 }],
   },
 };
