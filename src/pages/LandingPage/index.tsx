@@ -4,10 +4,10 @@ import { useTypedSelector, useAppDispatch } from 'hooks';
 import { removeUser as removeUserData, editName as editNameAction } from 'stores/actions';
 import { navigation } from 'helpers';
 import LandingPageStyle from './style';
-import { UserData } from 'interface';
+import { UserData, UserState } from 'interface';
 
 const LandingPage = () => {
-  const { user }  = useTypedSelector('user');
+  const { user }  = useTypedSelector<UserState>('user');
   const removeUser = useAppDispatch(removeUserData);
   const editName = useAppDispatch<UserData>(editNameAction);
   const { navigate } = navigation();

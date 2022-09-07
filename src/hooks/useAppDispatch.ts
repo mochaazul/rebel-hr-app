@@ -1,17 +1,37 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from 'stores';
-import { ActionCreatorWithPayload, AsyncThunk } from '@reduxjs/toolkit';
+import {
+  ActionCreatorWithPayload, AsyncThunk, AsyncThunkAction, unwrapResult
+} from '@reduxjs/toolkit';
 import { RequestOptionGenericType } from 'interface';
 
-const useAppDispatch = <T>(action: AsyncThunk<any, any, any> | ActionCreatorWithPayload<any, any>) => {
+export const useUnwrapAsyncThunk = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  return useCallback(
+    <R>( asyncThunk: AsyncThunkAction<R, any, any> ): Promise<R> =>
+      dispatch( asyncThunk ).then( unwrapResult ),
+    [dispatch]
+  );
+};
+
+const useAppDispatch = <T>( action: ActionCreatorWithPayload<any, any> ) => {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  return useCallback((params?: RequestOptionGenericType<T> | T) =>
-    dispatch(action({ ...params })),
-  [dispatch, action]);
+  return useCallback( ( params?: RequestOptionGenericType<T> | T ) =>
+    dispatch( action( { ...params } ) ),
+  [dispatch, action] );
 
 };
 
-export default useAppDispatch;
+const useAppAsyncDispatch = <T>( action: AsyncThunk<any, any, any> ) => {
+  const unwrap = useUnwrapAsyncThunk();
+
+  return useCallback( ( params?: RequestOptionGenericType<T> | T ) =>
+    unwrap( action( { ...params } ) as AsyncThunkAction<any, any, any> ),
+  [unwrap, action] );
+
+};
+
+export { useAppDispatch, useAppAsyncDispatch };
