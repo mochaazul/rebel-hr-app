@@ -9,7 +9,7 @@ import { RequestOptionGenericType } from 'interface';
 export const useUnwrapAsyncThunk = () => {
   const dispatch = useDispatch<AppDispatch>();
   return useCallback(
-    <R>( asyncThunk: AsyncThunkAction<R, any, any> ): Promise<R> =>
+    <T>( asyncThunk: AsyncThunkAction<T, any, any> ): Promise<T> =>
       dispatch( asyncThunk ).then( unwrapResult ),
     [dispatch]
   );
