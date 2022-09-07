@@ -1,5 +1,5 @@
 import { login as loginAction } from 'stores/actions';
-import { useAppDispatch } from 'hooks';
+import { useAppAsyncDispatch } from 'hooks';
 import {
   requiredRule,
   minLengthRule,
@@ -36,7 +36,7 @@ export const loginField = {
 };
 
 const useLoginPage = () => {
-  const login = useAppDispatch<LoginType>(loginAction);
+  const login = useAppAsyncDispatch<LoginType>(loginAction);
   const onClickLogin = ({ username, password }: any) => {
     login({
       payload: {

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useAppDispatch, useTypedSelector } from 'hooks';
+import { useAppAsyncDispatch, useTypedSelector } from 'hooks';
 import React, { useEffect, useState } from 'react';
 
 import {
@@ -57,10 +57,10 @@ const useDashboard = () => {
   const [modalVisible, setModalVisible] = useState<ModalType>(ModalType.INIT);
   const [idArticle, setIdArticle] = useState(0);
 
-  const fetchArticle = useAppDispatch<Pagination>(getArticles);
-  const addArticle = useAppDispatch<PayloadArticle>(addArticleAction);
-  const updateArticle = useAppDispatch<PayloadArticle>(updateArticleAction);
-  const deleteArticle = useAppDispatch<PayloadArticle>(deleteArticleAction);
+  const fetchArticle = useAppAsyncDispatch<Pagination>(getArticles);
+  const addArticle = useAppAsyncDispatch<PayloadArticle>(addArticleAction);
+  const updateArticle = useAppAsyncDispatch<PayloadArticle>(updateArticleAction);
+  const deleteArticle = useAppAsyncDispatch<PayloadArticle>(deleteArticleAction);
 
   useEffect(() => {
     fetchArticle({
