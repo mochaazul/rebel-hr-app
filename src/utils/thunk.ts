@@ -1,7 +1,9 @@
 import { createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit';
+import { BaseThunkAPI } from '@reduxjs/toolkit/dist/createAsyncThunk';
 import { generateQueryString } from 'helpers';
 import { Pagination, RequestOptionGenericType } from 'interface';
 import { apiCall } from './api';
+
 
 type ThunkUtilsType = {
   type: string;
@@ -24,11 +26,11 @@ export const thunkUtils = <T, K = void>({
   endpoint,
 }: ThunkUtilsType) => {
 
-  return createAsyncThunk(type, async(payload: RequestOptionGenericType<K>, thunkAPI) => {
+  return createAsyncThunk(type, async(payload:RequestOptionGenericType<K> | void, thunkAPI) => {
     try {
-      const safeQueryParam = payload.queryParam ? payload.queryParam : queryParam ? queryParam : {};
-      const safePagination = payload.pagination ? payload.pagination : pagination ? pagination : {};
-      const safeEndpoint = payload.id ? `${ endpoint }/${ payload.id }` : endpoint;
+      const safeQueryParam = payload?.queryParam ? payload.queryParam : queryParam ? queryParam : {};
+      const safePagination = payload?.pagination ? payload.pagination : pagination ? pagination : {};
+      const safeEndpoint = payload?.id ? `${ endpoint }/${ payload.id }` : endpoint;
       const response = await apiCall<T>({
         endpoint: `${ safeEndpoint }?${ generateQueryString({
           ...safeQueryParam,
@@ -36,7 +38,7 @@ export const thunkUtils = <T, K = void>({
         })
         }`,
         method,
-        payload: payload.payload
+        payload: payload?.payload
       });
       if (onSuccess) onSuccess({
         response,

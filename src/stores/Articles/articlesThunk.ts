@@ -12,7 +12,7 @@ export const addArticle = thunkUtils<PayloadArticle>({
   type: 'articles/addArticle',
   endpoint: endpoints.article,
   method: 'POST',
-  onSuccess: ({ response, dispatch }) => dispatch(getArticles({})),
+  onSuccess: ({ response, dispatch }) => dispatch(getArticles()),
 });
 
 export const updateArticle = thunkUtils<ArticleDetail, PayloadArticle>({
