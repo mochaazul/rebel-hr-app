@@ -14,7 +14,7 @@ const initialState: ArticleState = {
 export const articleSlice = createSlice({
   name: 'articles',
   initialState,
-  reducers: { example: () => initialState },
+  reducers: { resetState: () => initialState },
   extraReducers: builder => {
     builder.addCase(getArticles.fulfilled, (state, action) => {
       state.loading = false;
@@ -41,4 +41,4 @@ export const articleSlice = createSlice({
   }
 });
 
-export const { example } = articleSlice.actions;
+export const { resetState } = articleSlice.actions;

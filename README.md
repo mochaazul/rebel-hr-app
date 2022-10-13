@@ -16,6 +16,9 @@
       - [Usage](#usage)
       - [Usage](#usage-1)
       - [Usage](#usage-2)
+      - [Usage](#usage-3)
+      - [Usage](#usage-4)
+  - [Simple Guide to the redux toolkit](#simple-guide-to-use-redux-toolkit)
 
 
 ## Project Structure
@@ -145,6 +148,20 @@ export const StyledButton = Styled(Button)`
     | payload  | `object`   | Yes       |  Request HTML Payload  |
 
 
+- ### thunk Function
+    > A wrapper function that accepts a Redux action type string and a callback function that should return a promise
+   
+    | Argument | Type       | Nullable? | Description       |
+    | -------- | ---------- | --------- | ----------------- |
+    | type    | `string`   | No       |  A string that will be used to generate additional Redux action type constants, representing the lifecycle of an async request |
+    | method  | `GET` `POST` `DELETE` `PUT` `PATCH`   | No       |  Request method |
+    | queryParam | `object`   | Yes        |  the part of the URL that assigns a value to a specific parameter. |
+    | pagination   | `object`   | Yes       |  request pagination |
+    | onSuccess   |  `Function`   | Yes  | callback function when success |
+    | onFailed  | `Function`   | Yes       |  callback function when failed  |
+    | endpoint  | `string`   | No       |  Endpoint path, example `/products`  |
+
+
 
 ## Helper Functions
 - ### History function
@@ -179,16 +196,47 @@ export const StyledButton = Styled(Button)`
     import { useAppDispatch } from 'hooks'
 
     export const Dashboard = ({ value }) => {
-      const dispatch = useAppDispatch()
-      const handleGetArticle = useCallback(() => dispatch(getArticles), [])
+      const getArticles = useAppDispatch(getArticlesAction)
+      const handleGetArticle = useCallback(() => {
+        getArticles()
+      },[getArticles])
       return (
         <div>
           <span>{value}</span>
-          <button onClick={handleGetArticle}>Increase counter</button>
+          <button onClick={handleGetArticle}>Get Articles</button>
         </div>
       )
     }
     ```
+
+  - ### useAppAsyncDispatch
+    A hook to access the redux dispatch function which returns promise value
+  
+    #### Usage
+
+    ```jsx
+    import React, { useCallback } from 'react'
+    import { useAppDispatch } from 'hooks'
+
+    export const Dashboard = ({ value }) => {
+      const getArticles = useAppAsyncDispatch(getArticlesAction)
+       const handleGetArticle = useCallback( async () => {
+        try {
+          const response = await getArticles()
+          // do something
+        } catch(e) {
+          // ....
+        }
+      },[getArticles])
+      return (
+        <div>
+          <span>{value}</span>
+          <button onClick={handleGetArticle}>Get Articles</button>
+        </div>
+      )
+    }
+    ```
+
   - ### useTypedSelector
     A hook to access the redux store's. This hook takes a selector function as an argument. The selector is called with the store state.
   
@@ -199,7 +247,7 @@ export const StyledButton = Styled(Button)`
       import { useTypedSelector } from 'hooks'
     
       export const Dashboard = () => {
-          const { articles, loading: loadingArticle } = useTypedSelector(state => state.articles);
+          const { articles, loading: loadingArticle } = useTypedSelector('articles');
           return (
               <ul>
                 {articles.map}
@@ -213,7 +261,7 @@ export const StyledButton = Styled(Button)`
 
       | Argument | Type       | Nullable? | Description |
       | -------- | ---------- | --------- | ------- |
-      | value    | `any`   | No       |  The state / props that needs to be tracked |
+      | value    | `string`   | No       |  The state that needs to be tracked |
   
     #### Usage
   
@@ -265,3 +313,119 @@ export const StyledButton = Styled(Button)`
       )
     }
     ```
+    ## Simple guide to use redux toolkit
+    - Add new folder into store folder
+      ```
+      
+      ├── store 
+      │    ├── featureFolder(eg. Articles)
+      
+      ```
+    - Add 3 files into your folder
+      #### 1. featureSlice.ts (eg. articleSlice.ts)
+        in this file contains function createSlice. createSlice function that will auto-generate the action types and action creators, based on the names of the reducer functions you provide. [more info](https://redux-toolkit.js.org/api/createslice)
+        - createSlice 
+          | Argument | Type       | Nullable? | Description |
+          | -------- | ---------- | --------- | ------- |
+          | name    | `string`   | No       |   name to identify the slice |
+          | inititalState    | `object or any`   | No       |   initial state value |
+          | reducer    | `object`   | No       |   An object containing Redux "case reducer" functions (functions intended to handle a specific action type, equivalent to a single case statement in a switch). |
+          | extraReducer    | `object`   | No       |   a function that receives a parameter called builder. The builder object provides methods that let us define additional case reducers that will run in response to actions defined outside of the slice. We'll use builder.addCase(actionCreator, reducer) to handle each of the actions dispatched by our async thunks. |
+      
+      #### **Example**
+      
+      ```ts
+      import { createSlice, isAnyOf } from '@reduxjs/toolkit'
+      import {getArticles, addArticle, updateArticle, deleteArticle} from './articlesThunk';
+
+      const initialState = {
+        articles: [],
+        loading: false,
+        error: {}
+        }
+
+        export const articleSlice = createSlice({
+        name: 'articles',
+        initialState,
+         reducers: { resetState: () => initialState },
+        extraReducers: builder => {
+          builder.addCase(getArticles.fulfilled, (state, action) => {
+            state.loading = false;
+            state.articles = action.payload.data;
+          });
+          builder.addCase(addArticle.fulfilled, state => {
+            state.loading = false;
+          });
+          builder.addCase(updateArticle.fulfilled, state => {
+            state.loading = false;
+          });
+          builder.addMatcher(
+            isAnyOf(updateArticle.rejected, getArticles.rejected,
+              addArticle.rejected, deleteArticle.rejected), (state, action) => {
+              state.loading = false;
+              state.error = action.payload
+            });
+          builder.addMatcher(
+            isAnyOf(updateArticle.pending, getArticles.pending,
+              addArticle.pending, deleteArticle.pending), state => {
+              state.loading = true;
+              state.error = initialState.error;
+            });
+        }
+      });
+      export const { resetState } = articleSlice.actions;
+      ```
+      #### 2. featureThunk.ts (eg. articleThunk.ts)
+      in this file contains a collection async function that call [thunk](#utilities-functions) function
+      #### **Example**
+
+      
+      ```ts
+      import { endpoints } from 'constant';
+      import { thunkUtils } from 'utils';
+
+      export const getArticles = thunkUtils({
+        type: 'articles/getArticles',
+        method: 'GET',
+        endpoint: endpoints.article,
+      });
+
+      ```
+      #### 3. index.ts
+      entry file for the feature
+      ```
+      
+      ├── store 
+      │    ├── Article
+                  ├── articleSlice.ts
+                  ├── articleThunk.ts
+                  ├── index.ts
+      ```
+
+     - add action into `store/action.ts`
+        #### **Example**
+
+        
+        ```ts
+        const reducers = combineReducers({
+            [articleSlice.name]: articleSlice.reducer,
+            [userSlice.name]: userSlice.reducer,
+            [yourSlice.name]: yourSlice.reducer,
+        });
+        ```
+    - add reducer into `store/index.ts`
+      #### **Example**
+
+      
+      ```ts
+      const reducers = combineReducers({
+          [articleSlice.name]: articleSlice.reducer,
+          [userSlice.name]: userSlice.reducer,
+          [yourSlice.name]: yourSlice.reducer,
+       });
+      ```
+    - Finish
+
+    
+    
+
