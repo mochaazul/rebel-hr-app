@@ -1,54 +1,56 @@
 import { combineReducers } from 'redux';
 import {
-  persistStore,
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER
+	persistStore,
+	persistReducer,
+	FLUSH,
+	REHYDRATE,
+	PAUSE,
+	PERSIST,
+	PURGE,
+	REGISTER
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { configureStore } from '@reduxjs/toolkit';
 import errorHandlerMiddleware from 'middlewares/errorHandlerMiddleware';
 import { userSlice } from './User';
 import { articleSlice } from './Articles';
+import { themeSlice } from './Theme/themeSlice';
 
 const persistConfig = {
-  key: 'root',
-  storage
+	key: 'root',
+	storage
 };
 
 const reducers = combineReducers({
-  [articleSlice.name]: articleSlice.reducer,
-  [userSlice.name]: userSlice.reducer
+	[articleSlice.name]: articleSlice.reducer,
+	[userSlice.name]: userSlice.reducer,
+	[themeSlice.name]: themeSlice.reducer
 });
 
 const middlewares = [
-  errorHandlerMiddleware,
-  // Put your custom middleware here
+	errorHandlerMiddleware,
+	// Put your custom middleware here
 ];
 
 const persistedReducer = persistReducer(persistConfig, reducers);
 
 const store = configureStore({
-  reducer: persistedReducer,
-  middleware: getDefaultMiddleware =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [
-          FLUSH,
-          REHYDRATE,
-          PAUSE,
-          PERSIST,
-          PURGE,
-          REGISTER
-        ]
-      },
-    }).concat(middlewares),
-  // eslint-disable-next-line no-undef
-  devTools: process.env.NODE_ENV !== 'production'
+	reducer: persistedReducer,
+	middleware: getDefaultMiddleware =>
+		getDefaultMiddleware({
+			serializableCheck: {
+				ignoredActions: [
+					FLUSH,
+					REHYDRATE,
+					PAUSE,
+					PERSIST,
+					PURGE,
+					REGISTER
+				]
+			},
+		}).concat(middlewares),
+	// eslint-disable-next-line no-undef
+	devTools: process.env.NODE_ENV !== 'production'
 });
 
 const persistor = persistStore(store);

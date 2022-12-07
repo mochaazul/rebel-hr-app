@@ -6,12 +6,12 @@ type CustomHistory = {
 }
 
 const History: CustomHistory = {
-  navigate: null,
-  push: (page:any, options?:NavigateOptions)  => {
-    if (History.navigate) {
-      History.navigate(page, options);
-    }
-  },
+	navigate: null,
+	push: (page:any, options?:NavigateOptions)  => {
+		if (History.navigate) {
+			History.navigate(page, options);
+		}
+	},
 };
   
 export default History;

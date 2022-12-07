@@ -6,9 +6,9 @@ import generateQueryString from './generateQueryString';
 export * from './validationRules';
 
 export {
-  logger,
-  navigation,
-  localStorage,
-  History,
-  generateQueryString,
+	logger,
+	navigation,
+	localStorage,
+	History,
+	generateQueryString,
 };

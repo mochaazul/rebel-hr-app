@@ -4,9 +4,9 @@ import React from 'react';
 // interface LabelType extends React.DetailedHTMLProps<React.LabelHTMLAttributes<HTMLLabelElement>, HTMLLabelElement> { }
 
 const Label:React.FC<React.DetailedHTMLProps<React.LabelHTMLAttributes<HTMLLabelElement>, HTMLLabelElement>> = ({ children, ...props }) => {
-  return (
-    <label { ...props }>{ children }</label>
-  );
+	return (
+		<label { ...props }>{ children }</label>
+	);
 };
 
 export default Label;

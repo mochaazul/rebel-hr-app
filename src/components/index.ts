@@ -6,11 +6,11 @@ import Label from './Label';
 import TextField from './TextField';
 import TextArea from './TextArea';
 export {
-  Header,
-  Button,
-  Text,
-  Form,
-  Label,
-  TextField,
-  TextArea
+	Header,
+	Button,
+	Text,
+	Form,
+	Label,
+	TextField,
+	TextArea
 };

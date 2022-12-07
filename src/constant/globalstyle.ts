@@ -10,9 +10,16 @@ export default createGlobalStyle`
     display: block;
   }
 
+  html{
+    height: 100vh;
+  }
+
   body {
     line-height: 1;
     font-family: ${ fonts.poppinsRegular };
+    background-color: #f5f1e6;
+    height: 100vh;
+
   }
 
   ol, ul {

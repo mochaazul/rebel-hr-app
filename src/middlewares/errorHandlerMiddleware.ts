@@ -11,12 +11,12 @@ import { MiddlewareAPI, Middleware } from '@reduxjs/toolkit';
 const errorHandlerMiddleware: Middleware =
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     (_api: MiddlewareAPI) => next => action => {
-      if (!navigator.onLine && action.type.includes('rejected')) {
-        // your cool toast
-        alert('check your internet connection');
-      }
+    	if (!navigator.onLine && action.type.includes('rejected')) {
+    		// your cool toast
+    		alert('check your internet connection');
+    	}
 
-      return next(action);
+    	return next(action);
     };
 
 export default errorHandlerMiddleware;

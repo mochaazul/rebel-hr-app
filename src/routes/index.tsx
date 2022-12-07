@@ -6,16 +6,14 @@ import {
 } from 'react-router-dom';
 import {
 	Dashboard,
-	Detail,
 	LandingPage,
 } from 'pages';
-import { Header } from 'components';
 import { Text } from 'components';
 import { Globalstyle } from 'constant';
 import AuthRoutes from './AuthRoute';
 import PrivateRoute from './PrivateRoute';
-import LoginPage from 'pages/LoginPage';
 import { NavigationSetter } from 'components/NavigationSetter';
+import LeaveTypePage from 'pages/LeaveTypes';
 
 const AppRouter:React.FC = () => {
 	return (
@@ -24,17 +22,20 @@ const AppRouter:React.FC = () => {
 			<NavigationSetter />
 			{ /* DO NOT DELETE ABOVE COMPONENT */ }
 
-			<Header />
 			<Globalstyle />
 			<Routes>
+
 				<Route path='/' element={ <LandingPage /> } />
+
 				<Route element={ <AuthRoutes /> }>
-					<Route path='/login' element={ <LoginPage /> } />
+					<Route path='/login' element={ <LandingPage /> } />
 				</Route>
+
 				<Route element={ <PrivateRoute /> }>
 					<Route path='/dashboard' element={ <Dashboard /> } />
-					<Route path='/detail' element={ <Detail /> } />
+					<Route path='/leave-type' element={ <LeaveTypePage /> } />
 				</Route>
+				
 				<Route path='*' element={ <Text.H1>404 NOT FOUND</Text.H1> } />
 			</Routes>
 		</BrowserRouter >

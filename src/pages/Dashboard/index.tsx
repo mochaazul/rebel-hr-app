@@ -1,106 +1,283 @@
-import React from 'react';
-import useDashboard from './useDashboard';
 import {
-  ContentModal, DashoardStyle, FloatingButton, Modal
-} from './style';
-import { Button, Form } from 'components';
+	AutoComplete, Button, DatePicker, Form, Input, Modal, Radio, Row
+} from 'antd';
+import Table, { ColumnsType } from 'antd/es/table';
+import { UserOutlined } from '@ant-design/icons';
+import React, { useState } from 'react';
+import { DashoardStyle } from './style';
+import Select, { DefaultOptionType } from 'antd/es/select';
+import { useNavigate } from 'react-router-dom';
+
+interface DataType {
+	name: string,
+	period: string,
+	start_date: string,
+	end_date: string,
+	noleave: number,
+	prev_period: number,
+	curr_period: number,
+	additional_leave: number,
+	total_leave: number,
+	cur_leave_status: string,
+	leave_taken: number,
+	leave_available: number,
+	total_leave_acc: number,
+	notes: string
+}
+
+const columns: ColumnsType<DataType> = [
+	{
+		title: 'Name',
+		dataIndex: 'name',
+		key: 'name',
+		width: 300,
+		fixed: 'left',
+		align: 'center'
+	},
+	{
+		title: 'Starting in 2020/ RW 4th Renewal',
+		dataIndex: 'period',
+		key: 'period',
+		children: [
+			{
+				title: 'Start Period',
+				dataIndex: 'start_date',
+				key: 'start_date'
+			},
+			{
+				title: 'End Period',
+				dataIndex: 'end_date',
+				key: 'end_date'
+			},
+			{
+				title: 'No. of Leave',
+				dataIndex: 'noleave',
+				key: 'noleave',
+				children: [
+					{
+						title: 'Previous Period',
+						dataIndex: 'prev_period',
+						key: 'prev_period',
+						width: 40,
+					},
+					{
+						title: 'Current Period',
+						dataIndex: 'curr_period',
+						key: 'curr_period',
+						width: 40,
+
+					},
+					{
+						title: 'Additional',
+						dataIndex: 'additional_leave',
+						key: 'additional_leave',
+						width: 40,
+
+					},
+					{
+						title: 'Total',
+						dataIndex: 'total_leave',
+						key: 'total_leave',
+						width: 40,
+					},
+				]
+			},
+			{
+				title: 'Current Leave Status',
+				dataIndex: 'cur_leave_status',
+				key: 'cur_leave_status',
+				children: [
+					{
+						title: 'Taken',
+						dataIndex: 'leave_taken',
+						key: 'leave_taken',
+						width: 40,
+
+					},
+					{
+						title: 'Available',
+						dataIndex: 'leave_available',
+						key: 'leave_available',
+						width: 40,
+
+					},
+					{
+						title: 'Total Leave Acc. to next period',
+						dataIndex: 'total_leave_acc',
+						key: 'total_leave_acc',
+						width: 150
+
+					},
+					{
+						title: 'Note',
+						dataIndex: 'notes',
+						key: 'notes'
+					},
+				]
+			}
+		]
+	}
+];
+
+const randomNumber = (max:number, min:number) => {
+	min = Math.ceil(min);
+	max = Math.floor(max);
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+const data: DataType[] = [];
+
+for (let i = 0; i < 50; i++) {
+	data.push({
+		name: 'Si Jono',
+		period: 'period',
+		start_date: new Date().toDateString(),
+		end_date: new Date().toDateString(),
+		noleave: randomNumber(13, 1),
+		prev_period: randomNumber(13, 1),
+		curr_period: randomNumber(13, 1),
+		additional_leave: randomNumber(13, 1),
+		total_leave: randomNumber(13, 1),
+		cur_leave_status: 'string',
+		leave_taken: randomNumber(13, 1),
+		leave_available: randomNumber(13, 1),
+		total_leave_acc: randomNumber(13, 1),
+		notes: randomNumber(13, 1) === 5 ? 'Need approval' : ''
+	});
+}
+
+const renderTitle = (title: string) => (
+	<span>
+		{ title }
+		<a
+			style={ { float: 'right' } }
+			href='https://www.google.com/search?q=antd'
+			target='_blank'
+			rel='noopener noreferrer'
+		>
+      more
+		</a>
+	</span>
+);
+
+const renderItem = (title: string, count: number, id:number) => ({
+	value: title,
+	label: (
+		<div
+			style={ {
+				display: 'flex',
+				justifyContent: 'space-between',
+			} }
+		>
+			{ title }
+			<span>
+				{ count }
+			</span>
+		</div>
+	),
+	id
+});
+
+const options = [
+	{
+		label: renderTitle('Front end'),
+		options: [renderItem('Mahmoud', 10000, 1), renderItem('Andhi', 10600, 2)],
+	},
+	{
+		label: renderTitle('Backend'),
+		options: [renderItem('Dika', 60100, 3), renderItem('Yasri', 30010, 4)],
+	},
+	{
+		label: renderTitle('Finance'),
+		options: [renderItem('Fulan', 100000, 5)],
+	},
+];
+
+const leaveType = [
+	{
+		label: 'Sick leave',
+		value: 1,
+		id: 1
+	},
+	{
+		label: 'Annual leave',
+		value: 2,
+		id: 2
+	},
+	{
+		label: 'Additional leave',
+		value: 3,
+		id: 3
+	},
+];
 
 const Dashboard:React.FC = () => {
 
-  const {
-    articles,
-    limit,
-    loadingArticle,
-    onChangeLimit,
-    onClickPagination,
-    modalVisible,
-    setModalVisible,
-    onOk,
-    modalType,
-    onDeleteArticle,
-    addArticleField,
-    setIdArticle
-  } = useDashboard();
-  const {
-    registeredValue, onSubmit, setFieldsValue, resetFieldsValue
-  } = Form.useForm({ fields: addArticleField });
+	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [hasSelectedEmployee, setHasSelectedEmployee] = useState<boolean>(false);
+	const [selectedEmployeeId, setSelectedEmployeeId] = useState<number|null>(null);
 
-  const renderPostList = () => {
-    if (!articles?.length) return null;
+	const showModal = () => {
+		setIsModalOpen(true);
+	};
 
-    return articles?.map(article => (
-      <div key={ article.id } className='posts'>
-        <div>
-          <h2>{ article.title }</h2>
-        </div>
-        <div>
-          <span onClick={ () => {
-            setModalVisible(modalType.UPDATE);
-            setIdArticle(article.id);
-            setFieldsValue({
-              title: article.title,
-              content: article.content
-            });
-          } }
-          >Edit | </span>
-          <span onClick={ () => onDeleteArticle(article.id) }>Delete</span>
-        </div>
-      </div>
-    ));
-  };
+	const handleOk = () => {
+		setIsModalOpen(false);
+	};
 
-  return (
-    <>
-      <DashoardStyle>
-        <h1>PAGINATION</h1>
-        <div className='list-container'>
-          { renderPostList() }
-          { loadingArticle && <h1>LOADING...</h1> }
-        </div>
+	const handleCancel = () => {
+		setIsModalOpen(false);
+	};
 
-        <div style={ { margin: '40px 0' } }>
-          <select onChange={ onChangeLimit } value={ limit }>
-            {
-              Array.from({ length: 10 }, (_, i) => (i + 1) * 10).map(arr => (
-                <option value={ arr } key={ arr }>{ arr }</option>
-              ))
-            }
-          </select>
-          <Button label='Prev Page' onClick={ () => onClickPagination('prev') } />
-          <Button label='Next Page' onClick={ () => onClickPagination('next') } />
-        </div>
+	const selected = (value:string, option: DefaultOptionType) => {
+		setHasSelectedEmployee(true);
+		setSelectedEmployeeId(option.id);
+	};
 
-        <h1>LOAD MORE</h1>
-        <div className='list-container' />
-        <FloatingButton>
-          <Button label='+' width='100%' onClick={ () => setModalVisible(modalType.ADD) } />
-        </FloatingButton>
-      </DashoardStyle>
-      <Modal modalVisible={ modalVisible !== modalType.INIT }>
-        <ContentModal>
-          <Form onSubmit={ e => {
-            const { title, content } = onSubmit(e);
-            onOk(title.value, content.value);
-            resetFieldsValue();
-          } }>
-            <Form.FormGroup>
-              <Form.Label>Title</Form.Label>
-              <Form.TextField placeholder='Title' { ...registeredValue('title') } />
-            </Form.FormGroup>
-            <Form.FormGroup>
-              <Form.Label>Content</Form.Label>
-              <Form.TextField placeholder='Content' { ...registeredValue('content') } />
-            </Form.FormGroup>
-            <Button label='Ok' type='submit' />
-            <Button label='Cancel' type='reset' onClick={ () => {
-              setModalVisible(modalType.INIT);
-              resetFieldsValue();
-            } } />
-          </Form>
-        </ContentModal>
-      </Modal>
-    </>
-  );
+	return (
+		<>
+			<DashoardStyle>
+				<Row style={ { marginBottom: '1rem' } }>
+					<Button type='primary' onClick={ showModal }>Add Record</Button>
+				</Row>
+				<Table
+					bordered
+					columns={ columns }
+					dataSource={ data }
+					size='middle'
+				/>
+				<Modal title='Add record' open={ isModalOpen } onOk={ handleOk } onCancel={ handleCancel } >
+					<AutoComplete
+						popupClassName='certain-category-search-dropdown'
+						style={ { width: '100%' } }
+						options={ options }
+						onSelect={ selected }
+					>
+						<Input.Search size='large' placeholder='Find employee' />
+					</AutoComplete>
+					{
+						hasSelectedEmployee &&
+						<Form
+							style={ { marginTop: '2rem' } }
+							layout={ 'vertical' }
+						>
+							<Form.Item label='Leave Type'>
+								<Select
+									options={ leaveType }
+								/>
+							</Form.Item>
+							<Form.Item label='Start Date'>
+								<DatePicker style={ { width: '100%' } }/>
+							</Form.Item>
+							<Form.Item label='Duration'>
+								<Input placeholder='Days'/>
+							</Form.Item>
+						</Form>
+					}
+				</Modal>
+			</DashoardStyle>
+		</>
+	);
 };
 
 export default Dashboard;

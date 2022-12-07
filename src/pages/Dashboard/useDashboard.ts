@@ -2,15 +2,11 @@
 import { useAppAsyncDispatch, useTypedSelector } from 'hooks';
 import React, { useEffect, useState } from 'react';
 
+import { getArticles, addArticle as addArticleAction, updateArticle as updateArticleAction, deleteArticle as deleteArticleAction } from 'stores/actions';
 import {
-  getArticles, addArticle as addArticleAction, updateArticle as updateArticleAction, deleteArticle as deleteArticleAction
-} from 'stores/actions';
-import {
-  createFieldConfig, maxLengthRule, minLengthRule, navigation, requiredRule
+	createFieldConfig, maxLengthRule, minLengthRule, navigation, requiredRule
 } from 'helpers';
-import {
-  ArticleState, Pagination, PayloadArticle
-} from 'interface';
+import { ArticleState, Pagination, PayloadArticle } from 'interface';
 
 enum ModalType {
   INIT,
@@ -24,114 +20,114 @@ type QueryParams = {
 };
 
 export const addArticleField = {
-  title: {
-    ...createFieldConfig({
-      name: 'title',
-      type: 'text'
-    }),
-    validationRules: [
-      requiredRule('title'),
-      minLengthRule('title', 10),
-      maxLengthRule('title', 25)
-    ]
-  },
-  content: {
-    ...createFieldConfig({
-      name: 'content',
-      type: 'text'
-    }),
-    validationRules: [
-      requiredRule('content'),
-      minLengthRule('content', 8),
-      maxLengthRule('content', 20)
-    ]
-  }
+	title: {
+		...createFieldConfig({
+			name: 'title',
+			type: 'text'
+		}),
+		validationRules: [
+			requiredRule('title'),
+			minLengthRule('title', 10),
+			maxLengthRule('title', 25)
+		]
+	},
+	content: {
+		...createFieldConfig({
+			name: 'content',
+			type: 'text'
+		}),
+		validationRules: [
+			requiredRule('content'),
+			minLengthRule('content', 8),
+			maxLengthRule('content', 20)
+		]
+	}
 };
 
 const useDashboard = () => {
-  const { articles, loading: loadingArticle }  = useTypedSelector<ArticleState>('articles');
-  const { navigate } = navigation();
+	const { articles, loading: loadingArticle }  = useTypedSelector<ArticleState>('articles');
+	const { navigate } = navigation();
 
-  const [offset, setOffset] = useState(0);
-  const [limit, setLimit] = useState(20);
-  const [modalVisible, setModalVisible] = useState<ModalType>(ModalType.INIT);
-  const [idArticle, setIdArticle] = useState(0);
+	const [offset, setOffset] = useState(0);
+	const [limit, setLimit] = useState(20);
+	const [modalVisible, setModalVisible] = useState<ModalType>(ModalType.INIT);
+	const [idArticle, setIdArticle] = useState(0);
 
-  const fetchArticle = useAppAsyncDispatch<Pagination>(getArticles);
-  const addArticle = useAppAsyncDispatch<PayloadArticle>(addArticleAction);
-  const updateArticle = useAppAsyncDispatch<PayloadArticle>(updateArticleAction);
-  const deleteArticle = useAppAsyncDispatch<PayloadArticle>(deleteArticleAction);
+	const fetchArticle = useAppAsyncDispatch<Pagination>(getArticles);
+	const addArticle = useAppAsyncDispatch<PayloadArticle>(addArticleAction);
+	const updateArticle = useAppAsyncDispatch<PayloadArticle>(updateArticleAction);
+	const deleteArticle = useAppAsyncDispatch<PayloadArticle>(deleteArticleAction);
 
-  useEffect(() => {
-    fetchArticle({
-      payload: {
-        page: offset,
-        limit
-      }
-    });
-  }, [offset, limit]);
+	useEffect(() => {
+		fetchArticle({
+			payload: {
+				page: offset,
+				limit
+			}
+		});
+	}, [offset, limit]);
 
-  const onChangeLimit = (e?: React.ChangeEvent<HTMLSelectElement>) => {
-    if (e) {
-      const tempLimit = Number(e.target.value);
-      setLimit(tempLimit);
-      handleNavigate({ tempLimit });
-    }
-  };
+	const onChangeLimit = (e?: React.ChangeEvent<HTMLSelectElement>) => {
+		if (e) {
+			const tempLimit = Number(e.target.value);
+			setLimit(tempLimit);
+			handleNavigate({ tempLimit });
+		}
+	};
 
-  const onClickPagination = (type: string) => {
-    const tempOffset = type === 'next' ? Number(offset) + Number(limit) : Number(offset) - Number(limit);
-    setOffset(tempOffset > 0 ? tempOffset : 0);
-    handleNavigate({ tempOffset });
+	const onClickPagination = (type: string) => {
+		const tempOffset = type === 'next' ? Number(offset) + Number(limit) : Number(offset) - Number(limit);
+		setOffset(tempOffset > 0 ? tempOffset : 0);
+		handleNavigate({ tempOffset });
 
-  };
+	};
 
-  const handleNavigate = ({ tempOffset = offset, tempLimit = limit }: QueryParams) => {
-    navigate({
-      pathname: location.pathname,
-      search: `?page=${ tempOffset > 0 ? tempOffset : 0 }&limit=${ tempLimit }`
+	const handleNavigate = ({ tempOffset = offset, tempLimit = limit }: QueryParams) => {
+		navigate({
+			pathname: location.pathname,
+			search: `?page=${ tempOffset > 0 ? tempOffset : 0 }&limit=${ tempLimit }`
 
-    });
-  };
+		});
+	};
 
-  const onOk = (title: string, content: string) => {
-    const payload = {
-      title: title,
-      content: content,
-      meta_description: 'Interior',
-      created_by: 'superadmin',
-      tags: [1],
-      new_tags: [1],
-      thumbnail_img: 'gambar-rumah.jpg',
-      is_publish: true
-    };
-    modalVisible === ModalType.ADD ?
-      addArticle({ payload: { ...payload } }) :
-      updateArticle({
-        payload: { ...payload },
-        id: idArticle
-      });
-    setModalVisible(ModalType.INIT);
-  };
+	const onOk = (title: string, content: string) => {
+		const payload = {
+			title: title,
+			content: content,
+			meta_description: 'Interior',
+			created_by: 'superadmin',
+			tags: [1],
+			new_tags: [1],
+			thumbnail_img: 'gambar-rumah.jpg',
+			is_publish: true
+		};
+		modalVisible === ModalType.ADD ?
+			addArticle({ payload: { ...payload } }) :
+			updateArticle({
+				payload: { ...payload },
+				id: idArticle
+			});
+		setModalVisible(ModalType.INIT);
+	};
 
-  const onDeleteArticle = (id: number) => {
-    deleteArticle({ id });
-  };
+	const onDeleteArticle = (id: number) => {
+		deleteArticle({ id });
+	};
 
-  return {
-    articles,
-    limit,
-    loadingArticle,
-    onChangeLimit,
-    onClickPagination,
-    modalVisible,
-    setModalVisible,
-    onOk,
-    modalType: ModalType,
-    onDeleteArticle,
-    addArticleField,
-    setIdArticle
-  };
+	return {
+		articles,
+		limit,
+		loadingArticle,
+		onChangeLimit,
+		onClickPagination,
+		modalVisible,
+		setModalVisible,
+		onOk,
+		modalType: ModalType,
+		onDeleteArticle,
+		addArticleField,
+		setIdArticle
+	};
 };
 
 export default useDashboard;

@@ -8,5 +8,5 @@ import regExp from './regExp';
 import icons from './icons';
 import fonts from './fonts';
 export {
-  Languages, Images, colors, sizes, Globalstyle, endpoints, regExp, icons, fonts
+	Languages, Images, colors, sizes, Globalstyle, endpoints, regExp, icons, fonts
 };

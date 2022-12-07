@@ -1,9 +1,7 @@
 import { createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit';
-import { BaseThunkAPI } from '@reduxjs/toolkit/dist/createAsyncThunk';
 import { generateQueryString } from 'helpers';
 import { Pagination, RequestOptionGenericType } from 'interface';
 import { apiCall } from './api';
-
 
 type ThunkUtilsType = {
   type: string;
@@ -17,41 +15,41 @@ type ThunkUtilsType = {
 };
 
 export const thunkUtils = <T, K = void>({
-  type,
-  method,
-  queryParam,
-  pagination,
-  onSuccess,
-  onFailed,
-  endpoint,
+	type,
+	method,
+	queryParam,
+	pagination,
+	onSuccess,
+	onFailed,
+	endpoint,
 }: ThunkUtilsType) => {
 
-  return createAsyncThunk(type, async(payload:RequestOptionGenericType<K> | void, thunkAPI) => {
-    try {
-      const safeQueryParam = payload?.queryParam ? payload.queryParam : queryParam ? queryParam : {};
-      const safePagination = payload?.pagination ? payload.pagination : pagination ? pagination : {};
-      const safeEndpoint = payload?.id ? `${ endpoint }/${ payload.id }` : endpoint;
-      const response = await apiCall<T>({
-        endpoint: `${ safeEndpoint }?${ generateQueryString({
-          ...safeQueryParam,
-          ...safePagination
-        })
-        }`,
-        method,
-        payload: payload?.payload
-      });
-      if (onSuccess) onSuccess({
-        response,
-        dispatch: thunkAPI.dispatch
-      });
-      return response;
-    } catch (error) {
-      if (onFailed) onFailed({
-        error,
-        dispatch: thunkAPI.dispatch
-      });
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-  );
+	return createAsyncThunk(type, async(payload:RequestOptionGenericType<K> | void, thunkAPI) => {
+		try {
+			const safeQueryParam = payload?.queryParam ? payload.queryParam : queryParam ? queryParam : {};
+			const safePagination = payload?.pagination ? payload.pagination : pagination ? pagination : {};
+			const safeEndpoint = payload?.id ? `${ endpoint }/${ payload.id }` : endpoint;
+			const response = await apiCall<T>({
+				endpoint: `${ safeEndpoint }?${ generateQueryString({
+					...safeQueryParam,
+					...safePagination
+				})
+				}`,
+				method,
+				payload: payload?.payload
+			});
+			if (onSuccess) onSuccess({
+				response,
+				dispatch: thunkAPI.dispatch
+			});
+			return response;
+		} catch (error) {
+			if (onFailed) onFailed({
+				error,
+				dispatch: thunkAPI.dispatch
+			});
+			return thunkAPI.rejectWithValue(error);
+		}
+	}
+	);
 };

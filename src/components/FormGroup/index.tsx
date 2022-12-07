@@ -2,12 +2,12 @@ import React from 'react';
 import { FormGroupWrapper, FormGroupWrapperInterface } from './style';
 
 const FormGroup = ({ children, ...props }: FormGroupWrapperInterface) => {
-  return (
+	return (
 
-    <FormGroupWrapper { ...props }>
-      { children }
-    </FormGroupWrapper>
-  );
+		<FormGroupWrapper { ...props }>
+			{ children }
+		</FormGroupWrapper>
+	);
 };
 
 export default FormGroup;

@@ -8,15 +8,15 @@ import FormGroup from '../FormGroup';
 import { FormStyled, FormType } from './style';
 
 const Form = ({ children, ...props }: FormType) => {
-  return (
-    <FormStyled { ...props }>{ children }</FormStyled>
-  );
+	return (
+		<FormStyled { ...props }>{ children }</FormStyled>
+	);
 };
 
 export default Object.assign(Form, {
-  TextField,
-  TextArea,
-  Label,
-  FormGroup,
-  useForm
+	TextField,
+	TextArea,
+	Label,
+	FormGroup,
+	useForm
 });

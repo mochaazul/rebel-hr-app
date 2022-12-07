@@ -67,6 +67,4 @@ const ContentModal = styled.div`
       padding: 10px;
     `;
 
-export {
-  DashoardStyle, FloatingButton, Modal, ContentModal
-};
+export { DashoardStyle, FloatingButton, Modal, ContentModal };
