@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { DashoardStyle } from './style';
 import Select, { DefaultOptionType } from 'antd/es/select';
 import { useNavigate } from 'react-router-dom';
+import dataGenerator from 'helpers/dataGenerator';
 
 interface DataType {
 	name: string,
@@ -119,32 +120,8 @@ const columns: ColumnsType<DataType> = [
 	}
 ];
 
-const randomNumber = (max:number, min:number) => {
-	min = Math.ceil(min);
-	max = Math.floor(max);
-	return Math.floor(Math.random() * (max - min + 1)) + min;
-};
-
-const data: DataType[] = [];
-
-for (let i = 0; i < 50; i++) {
-	data.push({
-		name: 'Si Jono',
-		period: 'period',
-		start_date: new Date().toDateString(),
-		end_date: new Date().toDateString(),
-		noleave: randomNumber(13, 1),
-		prev_period: randomNumber(13, 1),
-		curr_period: randomNumber(13, 1),
-		additional_leave: randomNumber(13, 1),
-		total_leave: randomNumber(13, 1),
-		cur_leave_status: 'string',
-		leave_taken: randomNumber(13, 1),
-		leave_available: randomNumber(13, 1),
-		total_leave_acc: randomNumber(13, 1),
-		notes: randomNumber(13, 1) === 5 ? 'Need approval' : ''
-	});
-}
+// Generate random data
+const data: DataType[] = dataGenerator(20, 'cuti');
 
 const renderTitle = (title: string) => (
 	<span>
