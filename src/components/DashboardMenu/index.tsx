@@ -9,7 +9,6 @@ import {
 import { Menu, MenuProps } from 'antd';
 import { MenuInfo } from 'rc-menu/lib/interface';
 import { useNavigate } from 'react-router-dom';
-import path from 'node:path/win32';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
