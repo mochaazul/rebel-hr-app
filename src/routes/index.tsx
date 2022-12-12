@@ -14,6 +14,8 @@ import AuthRoutes from './AuthRoute';
 import PrivateRoute from './PrivateRoute';
 import { NavigationSetter } from 'components/NavigationSetter';
 import LeaveTypePage from 'pages/LeaveTypes';
+import EmployeePage from 'pages/Employee';
+import UserPage from 'pages/Users';
 
 const AppRouter:React.FC = () => {
 	return (
@@ -34,6 +36,8 @@ const AppRouter:React.FC = () => {
 				<Route element={ <PrivateRoute /> }>
 					<Route path='/dashboard' element={ <Dashboard /> } />
 					<Route path='/leave-type' element={ <LeaveTypePage /> } />
+					<Route path='/employee' element={ <EmployeePage/> } />
+					<Route path='/user' element={ <UserPage/> }/>
 				</Route>
 				
 				<Route path='*' element={ <Text.H1>404 NOT FOUND</Text.H1> } />

@@ -8,6 +8,7 @@ import {
 } from '@ant-design/icons';
 import { Menu, MenuProps } from 'antd';
 import { MenuInfo } from 'rc-menu/lib/interface';
+import { useNavigate } from 'react-router-dom';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -29,6 +30,20 @@ function getItem(option:optionType
 	} as MenuItem;
 }
 
+const navigationList = [{ label: 'Tracker', key: '0', icon: <PieChartOutlined/>, path: '/dashboard' },
+	{ label: 'Leave Settings', key: '1', icon: <UserOutlined/>, path: ''},
+	{ label: 'Leave Types', key: '2', path: '/leave-type' },
+	{ label: 'Database', key: '3', icon: <TeamOutlined/>, path: ''},
+	{ label: 'Employee', key: '4', path: '/employee' },
+	{ label: 'Users', key: '5', icon: <UserOutlined/>, path: '/user' },
+	{ label: 'Roles', key: '6', icon: <FileOutlined/>, path: '/dashboard' }];
+
+const tempNavigationHandler = (key:string) => {
+	const item = navigationList.find((el:MenuItem) => el?.key === key);
+	if (item?.path) return item?.path;
+	else return 'dashboard';
+};
+
 const items: MenuItem[] = [
 	getItem({ label: 'Tracker', key: '0', icon: <PieChartOutlined/>, path: '/dashboard' }),
 	getItem({ label: 'Leave Settings', key: '1', icon: <UserOutlined/>, path: '', children: [
@@ -42,9 +57,10 @@ const items: MenuItem[] = [
 ];
 
 const DashboardMenu = () => {
+	const navigate = useNavigate();
 
 	const menuClickHandler = (info: MenuInfo) => {
-		console.log(info);
+		navigate(tempNavigationHandler(info.key));
 	};
 
 	return (
