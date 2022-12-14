@@ -3,37 +3,24 @@ import Table, { ColumnsType } from 'antd/es/table';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import DropdownCustom from 'components/DropdownCustom';
 import {
-	 Button, Form, Input, MenuProps, Modal, Popover, Row,
+	 Button,  Form, Input, MenuProps, Modal, Popover, Row,
 } from 'antd';
 
 interface DataType {
-	name: string,
+	rolestype: string,
 	description: string,
-	noleave: number,
-	periode: string,
-	code: string
+	privilege: string
 }
 
 const data:DataType[] = [{
-	name: 'Sick Leave',
-	description: 'Cuti sakit',
-	code: 'SIC',
-	noleave: 12,
-	periode: 'bulanan'
+	rolestype: 'HR',
+	description: 'HR Rebelworks',
+	privilege: 'Admin, editing cms, menambah cuti'
 }, {
-	name: 'Annual leave',
-	description: 'Jatah cuti tahunan',
-	noleave: 15,
-	code: 'ANN',
-	periode: 'per 15 Bulan'
-}, {
-	name: 'Additional leave',
-	description: 'Cuti lain-lain',
-	code: 'ADD',
-	noleave: 12,
-	periode: 'tahunan'
+	rolestype: 'Employee',
+	description: 'Pekerja Rebelworks',
+	privilege: 'Apply cuti'
 }
-
 ];
 
 const itemsDropdown: MenuProps['items'] = [
@@ -55,7 +42,7 @@ const itemsDropdown: MenuProps['items'] = [
 	}
 ];
 
-const LeaveTypePage:React.FC = () => {
+const RoleTypePage:React.FC = () => {
 	
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -64,18 +51,38 @@ const LeaveTypePage:React.FC = () => {
 	const hidePopover = () => {
 		setIsPopoverOpen(null);
 	};
+	
+	const handleOpenChange = (openPopover:boolean, index: number) => {
+		if (openPopover) {
+			setIsPopoverOpen(index);
+		} else {
+			setIsPopoverOpen(null);
+		}
+	};
 
+	const showModal = () => {
+		setIsModalOpen(true);
+	};
+
+	const handleOk = () => {
+		setIsModalOpen(false);
+	};
+
+	const handleCancel = () => {
+		setIsModalOpen(false);
+	};
+	
 	const columns: ColumnsType<DataType> = [
 		{
-			title: 'Leave Type',
-			dataIndex: 'leave_type',
-			key: 'leave_type',
+			title: 'Roles',
+			dataIndex: 'roles',
+			key: 'roles',
 			align: 'center',
 			children: [
 				{
-					title: 'Name',
-					dataIndex: 'name',
-					key: 'name'
+					title: 'Roles Type',
+					dataIndex: 'rolestype',
+					key: 'rolestype'
 				},
 				{
 					title: 'Description',
@@ -83,19 +90,9 @@ const LeaveTypePage:React.FC = () => {
 					key: 'description'
 				},
 				{
-					title: 'Kode',
-					dataIndex: 'code',
-					key: 'code'
-				},
-				{
-					title: 'No. of Leave',
-					dataIndex: 'noleave',
-					key: 'noleave',
-				},
-				{
-					title: 'Periode',
-					dataIndex: 'periode',
-					key: 'periode'
+					title: 'Privilege',
+					dataIndex: 'privilege',
+					key: 'privilege',
 				},
 				{
 					title: 'Status',
@@ -110,13 +107,10 @@ const LeaveTypePage:React.FC = () => {
 					dataIndex: 'action',
 					key: 'action',
 					align: 'center',
-					width: 120,
 					render: (text, record, index) => {
 						return (<div style={ { justifyContent: 'space-evenly', display: 'flex' } }>
-
 							<a>
 								<EditOutlined/>
-	
 							</a>
 							<Popover
 								content={ <a onClick={ hidePopover }>Close</a> }
@@ -127,31 +121,13 @@ const LeaveTypePage:React.FC = () => {
 							>
 								<a><DeleteOutlined /></a>
 							</Popover>
+					
 						</div>);
 					}
 				}
 			]
 		}
 	];
-	
-	const handleOpenChange = (openPopover:boolean, index: number) => {
-		if (openPopover) {
-			setIsPopoverOpen(index);
-		} else {
-			setIsPopoverOpen(null);
-		}
-	};
-	const showModal = () => {
-		setIsModalOpen(true);
-	};
-
-	const handleOk = () => {
-		setIsModalOpen(false);
-	};
-
-	const handleCancel = () => {
-		setIsModalOpen(false);
-	};
 
 	return (<>
 		<Row style={ { marginBottom: '1rem' } }>
@@ -189,4 +165,4 @@ const LeaveTypePage:React.FC = () => {
 	</>);
 };
 
-export default LeaveTypePage;
+export default RoleTypePage;

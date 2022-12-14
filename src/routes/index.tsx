@@ -16,6 +16,7 @@ import { NavigationSetter } from 'components/NavigationSetter';
 import LeaveTypePage from 'pages/LeaveTypes';
 import EmployeePage from 'pages/Employee';
 import UserPage from 'pages/Users';
+import RoleTypePage from 'pages/Roles';
 
 const AppRouter:React.FC = () => {
 	return (
@@ -37,7 +38,8 @@ const AppRouter:React.FC = () => {
 					<Route path='/dashboard' element={ <Dashboard /> } />
 					<Route path='/leave-type' element={ <LeaveTypePage /> } />
 					<Route path='/employee' element={ <EmployeePage/> } />
-					<Route path='/user' element={ <UserPage/> }/>
+					<Route path='/users' element={ <UserPage/> }/>
+					<Route path='roles' element={ <RoleTypePage/> }/>
 				</Route>
 				
 				<Route path='*' element={ <Text.H1>404 NOT FOUND</Text.H1> } />

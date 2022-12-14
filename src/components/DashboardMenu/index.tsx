@@ -31,12 +31,12 @@ function getItem(option:optionType
 }
 
 const navigationList = [{ label: 'Tracker', key: '0', icon: <PieChartOutlined/>, path: '/dashboard' },
-	{ label: 'Leave Settings', key: '1', icon: <UserOutlined/>, path: ''},
+	{ label: 'Leave Settings', key: '1', icon: <UserOutlined/>, path: '' },
 	{ label: 'Leave Types', key: '2', path: '/leave-type' },
-	{ label: 'Database', key: '3', icon: <TeamOutlined/>, path: ''},
+	{ label: 'Database', key: '3', icon: <TeamOutlined/>, path: '' },
 	{ label: 'Employee', key: '4', path: '/employee' },
-	{ label: 'Users', key: '5', icon: <UserOutlined/>, path: '/user' },
-	{ label: 'Roles', key: '6', icon: <FileOutlined/>, path: '/dashboard' }];
+	{ label: 'Users', key: '5', icon: <UserOutlined/>, path: '/users' },
+	{ label: 'Roles', key: '6', icon: <FileOutlined/>, path: '/roles' }];
 
 const tempNavigationHandler = (key:string) => {
 	const item = navigationList.find((el:MenuItem) => el?.key === key);

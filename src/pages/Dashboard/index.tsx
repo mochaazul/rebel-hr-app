@@ -23,7 +23,8 @@ interface DataType {
 	leave_taken: number,
 	leave_available: number,
 	total_leave_acc: number,
-	notes: string
+	notes: string,
+	responsive?: []
 }
 
 const columns: ColumnsType<DataType> = [
@@ -112,7 +113,7 @@ const columns: ColumnsType<DataType> = [
 					{
 						title: 'Note',
 						dataIndex: 'notes',
-						key: 'notes'
+						key: 'notes',
 					},
 				]
 			}
