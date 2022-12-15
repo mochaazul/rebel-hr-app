@@ -69,6 +69,10 @@ const EmployeePage:React.FC = () => {
 	const onClickDelete = () => {
 		setIsModalOpen(true);
 	};
+
+	const onFinishForm = (values: any) => {
+		console.log('success', values);
+	};
 	
 	const roleType = [
 		{
@@ -165,12 +169,18 @@ const EmployeePage:React.FC = () => {
 			dataSource={ data }
 			size='middle'
 		/>
-		<Modal title='Tambah Karyawan' open={ isModalOpen } onOk={ handleOk } onCancel={ handleCancel } >
+		<Modal title='Tambah Karyawan' open={ isModalOpen } onOk={ handleOk } onCancel={ handleCancel }>
 			<Form
 				style={ { marginTop: '2rem' } }
 				layout={ 'vertical' }
 			>
-				<Form.Item label='Nama Lengkap'>
+				<Form.Item label='Nama Lengkap'
+	        			   rules={ [
+						{
+							required: true,
+							message: 'Please input your username!',
+						},
+			  ] } >
 					<Input placeholder='Nama lengkap'/>
 				</Form.Item>
 				<Form.Item label='NIK'>
@@ -194,7 +204,6 @@ const EmployeePage:React.FC = () => {
 					/>
 				</Form.Item>
 			</Form>
-			
 		</Modal>
 	</>);
 };
