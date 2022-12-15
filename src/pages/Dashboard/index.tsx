@@ -115,6 +115,11 @@ const columns: ColumnsType<DataType> = [
 						dataIndex: 'notes',
 						key: 'notes',
 					},
+					{
+						title: 'Reason',
+						dataIndex: 'reason',
+						key: 'reason',
+					},
 				]
 			}
 		]

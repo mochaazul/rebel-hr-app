@@ -169,7 +169,7 @@ const LeaveTypePage:React.FC = () => {
 		setIsEditModal(true);
 		form.setFieldsValue(record);
 		setIsModalOpen(true);
-	}
+	};
 
 	const handleSubmit = () => {
 		if (isEditModal) setIsEditModal(false);

@@ -6,6 +6,7 @@ import {
 	 Button, DatePicker, Form, Input, MenuProps, Modal, Popover, Row, Select
 } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { useForm } from 'antd/es/form/Form';
 
 interface DataType {
 	name: string,
@@ -14,6 +15,8 @@ interface DataType {
 	notelepon: string,
 	masukkerja: Date,
 	statuskerja: boolean,
+	email: string,
+	role: string,
 	responsive?: []
 }
 
@@ -41,7 +44,19 @@ const itemsDropdown: MenuProps['items'] = [
 const EmployeePage:React.FC = () => {
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [isPopoverOpen, setIsPopoverOpen] = useState<number | null>(null);
+	const [isEditModal, setIsEditModal] = useState<boolean>(false);
+	const [formValue, setFormValue] = useState<DataType>({
+		name: '',
+		noinduk: '',
+		tanggallahir: new Date(),
+		notelepon: '',
+		masukkerja: new Date(),
+		statuskerja: true,
+		email: '',
+		role: ''
+	});
 
+	const [form] = useForm();
 	const hidePopover = () => {
 		setIsPopoverOpen(null);
 	};
@@ -66,10 +81,6 @@ const EmployeePage:React.FC = () => {
 		setIsModalOpen(false);
 	};
 
-	const onClickDelete = () => {
-		setIsModalOpen(true);
-	};
-
 	const onFinishForm = (values: any) => {
 		console.log('success', values);
 	};
@@ -86,6 +97,22 @@ const EmployeePage:React.FC = () => {
 			id: 2
 		},
 	];
+
+	const handleEdit = (record:DataType) => {
+		setIsEditModal(true);
+		form.setFieldsValue(record);
+		setIsModalOpen(true);
+	};
+
+	const handleSubmit = () => {
+		if (isEditModal) setIsEditModal(false);
+		form.resetFields(['name', 'description', 'noleave', 'code', 'periode']);
+		setIsModalOpen(false);
+	};
+
+	const onFinishFailed = (errorInfo: any) => {
+		console.log(errorInfo);
+	  };
 	
 	const columns: ColumnsType<DataType> = [
 		{
@@ -139,9 +166,11 @@ const EmployeePage:React.FC = () => {
 					width: 120,
 					render: (value, record, index) => {
 						return <div style={ { justifyContent: 'space-evenly', display: 'flex' } }>
-							<a>
+							<a onClick={ () => {
+								handleEdit(record);
+							} } >
 								<EditOutlined/>
-
+	
 							</a>
 							<Popover
 								content={ <a onClick={ hidePopover }>Close</a> }
@@ -169,40 +198,47 @@ const EmployeePage:React.FC = () => {
 			dataSource={ data }
 			size='middle'
 		/>
-		<Modal title='Tambah Karyawan' open={ isModalOpen } onOk={ handleOk } onCancel={ handleCancel }>
+		<Modal title='Tambah Karyawan' open={ isModalOpen } footer={ null }>
 			<Form
+				form={ form }
 				style={ { marginTop: '2rem' } }
 				layout={ 'vertical' }
+				onFinish={ handleSubmit }
+				onFinishFailed={ onFinishFailed }
+				initialValues={ formValue }
 			>
-				<Form.Item label='Nama Lengkap'
-	        			   rules={ [
-						{
-							required: true,
-							message: 'Please input your username!',
-						},
-			  ] } >
-					<Input placeholder='Nama lengkap'/>
+				<Form.Item name={ 'name' } label='Nama Lengkap' rules={ [{ required: true, message: 'Harap mengisi form nama!', }] } >
+					<Input value={ formValue.name } onChange={ e => setFormValue({ ...formValue, name: e.target.value }) } placeholder='Nama lengkap'/>
 				</Form.Item>
-				<Form.Item label='NIK'>
-					<Input placeholder='NIK'/>
+				<Form.Item name={ 'noinduk' } label='NIK' rules={ [{ required: true, message: 'Harap mengisi from NIK' }] }>
+					<Input value={ formValue.noinduk } onChange={ e => setFormValue({ ...formValue, noinduk: e.target.value }) } placeholder='NIK'/>
 				</Form.Item>
-				<Form.Item label='Start Date'>
+				{ /* <Form.Item name={ 'tanggallahir' } label='Birth Date' rules={ [{ required: true, message: 'Harap mengisi form tanggal lahir!' }] }>
 					<DatePicker style={ { width: '100%' } }/>
-				</Form.Item>
-				<Form.Item label='No. Telepon'>
+				</Form.Item> */ }
+				<Form.Item name={ 'notelepon' } label='No. Telepon' rules={ [{ required: true, message: 'Harap mengisi nomor telepon' }] }>
 					<Input placeholder='No. Telepon'/>
 				</Form.Item>
-				<Form.Item label='Masuk Kerja'>
+				{ /* <Form.Item label='Masuk Kerja'>
 					<DatePicker style={ { width: '100%' } }/>
+				</Form.Item> */ }
+				<Form.Item name={ 'email' } rules={ [{ required: true, message: 'Harap mengisi form email' }, { type: 'email', message: 'Harap mengisi dengan tipe email' }] } label='Email'>
+					<Input value={ formValue.email } onChange={ e => setFormValue({ ...formValue, email: e.target.value }) } placeholder='Email'/>
 				</Form.Item>
-				<Form.Item label='Email'>
-					<Input placeholder='Email'/>
-				</Form.Item>
-				<Form.Item label='Role'>
+				<Form.Item name={ 'role' } rules={ [{ required: true, message: 'Harap memilih role' }] } label='Role'>
 					<Select
 						options={ roleType }
+						value={ formValue.role }
 					/>
 				</Form.Item>
+				<div style={ { flexDirection: 'row', justifyContent: 'space-evenly', display: 'flex' } }>
+					<Button type='primary' htmlType='submit'>
+						Submit
+					</Button>
+					<Button onClick={ handleCancel }>
+						Cancel
+					</Button>
+				</div>
 			</Form>
 		</Modal>
 	</>);

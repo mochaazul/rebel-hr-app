@@ -5,6 +5,7 @@ import DropdownCustom from 'components/DropdownCustom';
 import {
 	 Button,  Form, Input, MenuProps, Modal, Popover, Row,
 } from 'antd';
+import { useForm } from 'antd/es/form/Form';
 
 interface DataType {
 	rolestype: string,
@@ -45,9 +46,14 @@ const itemsDropdown: MenuProps['items'] = [
 const RoleTypePage:React.FC = () => {
 	
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
+	const [isEditModal, setIsEditModal] = useState<boolean>(false);
 	const [isPopoverOpen, setIsPopoverOpen] = useState<number | null>(null);
-
+	const [formValue, setFormValue] = useState<DataType>({
+		rolestype: '',
+		description: '',
+		privilege: '',
+	});
+	const [form] = useForm();
 	const hidePopover = () => {
 		setIsPopoverOpen(null);
 	};
@@ -64,13 +70,25 @@ const RoleTypePage:React.FC = () => {
 		setIsModalOpen(true);
 	};
 
-	const handleOk = () => {
-		setIsModalOpen(false);
-	};
-
 	const handleCancel = () => {
 		setIsModalOpen(false);
 	};
+
+	const handleSubmit = () => {
+		if (isEditModal) setIsEditModal(false);
+		form.resetFields(['name', 'description', 'noleave', 'code', 'periode']);
+		setIsModalOpen(false);
+	};
+
+	const onFinishFailed = (errorInfo: any) => {
+		console.log(errorInfo);
+	  };
+
+	  const handleEdit = (record:DataType) => {
+		setIsEditModal(true);
+		form.setFieldsValue(record);
+		setIsModalOpen(true);
+	}
 	
 	const columns: ColumnsType<DataType> = [
 		{
@@ -109,7 +127,9 @@ const RoleTypePage:React.FC = () => {
 					align: 'center',
 					render: (text, record, index) => {
 						return (<div style={ { justifyContent: 'space-evenly', display: 'flex' } }>
-							<a>
+							<a onClick={ () => {
+								handleEdit(record);
+							}}>
 								<EditOutlined/>
 							</a>
 							<Popover
@@ -139,27 +159,32 @@ const RoleTypePage:React.FC = () => {
 			dataSource={ data }
 			size='middle'
 		/>
-		<Modal title='Add leave type' open={ isModalOpen } onOk={ handleOk } onCancel={ handleCancel } >
+		<Modal title='Add Role Type' open={ isModalOpen } footer={ null } >
 			<Form
+				form={ form }
 				style={ { marginTop: '2rem' } }
 				layout={ 'vertical' }
+				onFinish={ handleSubmit }
+				onFinishFailed={ onFinishFailed }
+				initialValues={ formValue }
 			>
-				<Form.Item label='Nama Cuti'>
-					<Input placeholder='Nama cuti'/>
+				<Form.Item name={ 'rolestype' } label='Nama Role' rules={ [{ required: true, message: 'Harap mengisi form nama cuti' }] } >
+					<Input value={ formValue.rolestype } onChange={ e => setFormValue({ ...formValue, rolestype: e.target.value }) } placeholder='Nama Role'/>
 				</Form.Item>
-				<Form.Item label='Description'>
-					<Input placeholder='Deskripsi'/>
+				<Form.Item name={ 'description' } label='Deskripsi' rules={ [{ required: true, message: 'harap mengisi form deskripsi' }] } >
+					<Input value={ formValue.description } onChange={ e => setFormValue({ ...formValue, description: e.target.value }) } placeholder='Deskripsi'/>
 				</Form.Item>
-				<Form.Item label='Periode'>
-					<Input placeholder='Hari'/>
+				<Form.Item name={ 'privilege' } label='Privilege' rules={ [{ required: true, message: 'harap mengisi form deskripsi' }] }>
+					<Input value={ formValue.privilege } onChange={ e => setFormValue({ ...formValue, privilege: e.target.value }) } placeholder='Hari'/>
 				</Form.Item>
-				<Form.Item label='Kode'>
-					<Input placeholder='Code '/>
-				</Form.Item>
-				<Form.Item label='Pembaharuan Cuti'>
-					<Input placeholder='Pembaharuan Cuti'/>
-				</Form.Item>
-
+				<div style={ { flexDirection: 'row', justifyContent: 'space-evenly', display: 'flex' } }>
+					<Button type='primary' htmlType='submit'>
+						Submit
+					</Button>
+					<Button onClick={ handleCancel }>
+						Cancel
+					</Button>
+				</div>
 			</Form>
 		</Modal>
 	</>);
