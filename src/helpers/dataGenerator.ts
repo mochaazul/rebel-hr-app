@@ -6,6 +6,7 @@ const dataGenerator = (dataLength:number, type:string) => {
 		case 'cuti':
 			for (let i = 0; i < dataLength; i++) {
 				data.push({
+					key: i + 1,
 					name: 'Si Jono',
 					period: 'period',
 					start_date: new Date().toDateString(),
@@ -19,7 +20,8 @@ const dataGenerator = (dataLength:number, type:string) => {
 					leave_taken: randomNumber(13, 1),
 					leave_available: randomNumber(13, 1),
 					total_leave_acc: randomNumber(13, 1),
-					notes: randomNumber(13, 1) === 5 ? 'Need approval' : ''
+					notes: randomNumber(13, 1) === 5 ? 'Need approval' : '',
+					reason: randomNumber(2, 1) === 1 ? 'Liburan' : 'Pulang Kampung'
 				});
 			}
 			break;
