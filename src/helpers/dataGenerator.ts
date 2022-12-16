@@ -6,6 +6,7 @@ const dataGenerator = (dataLength:number, type:string) => {
 		case 'cuti':
 			for (let i = 0; i < dataLength; i++) {
 				data.push({
+					key: i + 1,
 					name: 'Si Jono',
 					period: 'period',
 					start_date: new Date().toDateString(),

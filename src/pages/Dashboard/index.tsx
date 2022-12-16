@@ -27,6 +27,14 @@ interface DataType {
 	responsive?: []
 }
 
+interface LeaveRecordType {
+	leave_type: string,
+	start_date: string,
+	end_date: string,
+	reason: string,
+	status: string
+}
+
 const columns: ColumnsType<DataType> = [
 	{
 		title: 'Name',
@@ -126,8 +134,51 @@ const columns: ColumnsType<DataType> = [
 	}
 ];
 
+const expendableColumn: ColumnsType<LeaveRecordType> = [
+	{
+		title: 'Leave Record',
+		dataIndex: 'leave_record',
+		key: 'leave_record',
+		children: [{
+			title: 'Leave Type',
+			dataIndex: 'leave_type',
+			key: 'leave_type'
+		}, {
+			title: 'Start Date',
+			dataIndex: 'start_date',
+			key: 'start_date'
+		}, {
+			title: 'End Date',
+			dataIndex: 'end_date',
+			key: 'end_date'
+		}, {
+			title: 'Reason',
+			dataIndex: 'reason',
+			key: 'reason'
+		}, {
+			title: 'Status',
+			dataIndex: 'status',
+			key: 'status'
+		}]
+	}
+];
+
 // Generate random data
 const data: DataType[] = dataGenerator(20, 'cuti');
+
+const expendableData: LeaveRecordType[] = [{
+	leave_type: 'Annual Leave',
+	start_date: new Date().toDateString(),
+	end_date: new Date().toDateString(),
+	reason: 'Healing',
+	status: 'approved'
+}, {
+	leave_type: 'Sick Leave',
+	start_date: new Date().toDateString(),
+	end_date: new Date().toDateString(),
+	reason: 'Mau GCU',
+	status: 'approved'
+}];
 
 const renderTitle = (title: string) => (
 	<span>
@@ -228,6 +279,16 @@ const Dashboard:React.FC = () => {
 					columns={ columns }
 					dataSource={ data }
 					size='middle'
+					expandable={ {
+						expandedRowRender: (record:DataType) => (
+							<Table
+								bordered
+								columns={ expendableColumn }
+								dataSource={ expendableData }
+								size='middle'
+							/>
+						)
+					} }
 				/>
 				<Modal title='Add record' open={ isModalOpen } onOk={ handleOk } onCancel={ handleCancel } >
 					<AutoComplete

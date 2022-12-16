@@ -11,9 +11,9 @@ import { useForm } from 'antd/es/form/Form';
 interface DataType {
 	name: string,
 	noinduk: string,
-	tanggallahir: Date,
+	tanggallahir: string,
 	notelepon: string,
-	masukkerja: Date,
+	masukkerja: string,
 	statuskerja: boolean,
 	email: string,
 	role: string,
@@ -48,9 +48,9 @@ const EmployeePage:React.FC = () => {
 	const [formValue, setFormValue] = useState<DataType>({
 		name: '',
 		noinduk: '',
-		tanggallahir: new Date(),
+		tanggallahir: new Date().toDateString(),
 		notelepon: '',
-		masukkerja: new Date(),
+		masukkerja: new Date().toDateString(),
 		statuskerja: true,
 		email: '',
 		role: ''
@@ -215,7 +215,7 @@ const EmployeePage:React.FC = () => {
 				</Form.Item>
 				{ /* <Form.Item name={ 'tanggallahir' } label='Birth Date' rules={ [{ required: true, message: 'Harap mengisi form tanggal lahir!' }] }>
 					<DatePicker style={ { width: '100%' } }/>
-				</Form.Item> */ }
+				</Form.Item>
 				<Form.Item name={ 'notelepon' } label='No. Telepon' rules={ [{ required: true, message: 'Harap mengisi nomor telepon' }] }>
 					<Input placeholder='No. Telepon'/>
 				</Form.Item>
